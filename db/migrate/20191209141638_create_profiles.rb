@@ -1,8 +1,6 @@
-class CreateDrivers < ActiveRecord::Migration[6.0]
-  def change
-    create_table :drivers do |t|
-      t.string :name
-      t.string :email
+class CreateProfiles < ActiveRecord::Migration[6.0]
+  def up
+    create_table :profiles do |t|
       t.text :address
       t.string :vehicle_type
       t.text :resident_state
@@ -18,11 +16,13 @@ class CreateDrivers < ActiveRecord::Migration[6.0]
       t.string :account_number
       t.string :bank_name
       t.string :account_type
+      t.references :user
       t.string :referral_name
-      t.text :password_digest
-      t.string :token
-      t.string :phone_number
       t.timestamps
     end
   end
+
+  def down
+  end 
+
 end
