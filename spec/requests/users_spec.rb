@@ -12,7 +12,7 @@ RSpec.describe "Users", type: :request do
 
   describe 'POST /signup' do
     context 'when valid request' do
-      before { post '/customers/signup', params: valid_attributes.to_json, headers: headers }
+      before { post '/signup', params: valid_attributes.to_json, headers: headers }
 
       it 'creates a new user' do
         expect(response).to have_http_status(201)
@@ -28,7 +28,7 @@ RSpec.describe "Users", type: :request do
     end
 
     context 'when invalid request' do
-      before { post '/customers/signup', params: {}, headers: headers }
+      before { post '/signup', params: {}, headers: headers }
 
       it 'does not create a new user' do
         expect(response).to have_http_status(422)
@@ -42,7 +42,7 @@ RSpec.describe "Users", type: :request do
   end
 
   describe "GET /users" do 
-    before { get "/customers/users", headers: headers}
+    before { get "/users", headers: headers}
     it 'returns users' do 
       expect(json).not_to be_empty
       expect(json.size).to eq(6)
@@ -55,7 +55,7 @@ RSpec.describe "Users", type: :request do
   end
 
   describe "GET /users/:id" do
-    before { get "/customers/users/#{user_id}", headers: headers}
+    before { get "/users/#{user_id}", headers: headers}
 
     context "when records exist" do
       it "returns a user" do
@@ -85,7 +85,7 @@ RSpec.describe "Users", type: :request do
 
     describe "PUT /users/:id" do
       context "when request is valid" do
-        before{ put "/customers/users/#{user_id}", params:{role: "Super Admin" }.to_json, headers: headers }
+        before{ put "/users/#{user_id}", params:{role: "Super Admin" }.to_json, headers: headers }
         
         it "should update role" do
           expect(json['role']).to eq("Super Admin")
@@ -98,7 +98,7 @@ RSpec.describe "Users", type: :request do
     end
 
     describe "DELETE /users/:id" do
-      before { delete "/customers/users/#{user_id}", headers: headers }
+      before { delete "/users/#{user_id}", headers: headers }
 
       it "returns 204 status" do
         expect(response).to have_http_status(204)

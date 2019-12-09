@@ -1,4 +1,4 @@
-class Customers::UsersController < Customers::BaseController
+class UsersController < ApplicationController
   skip_before_action :authorize_request, only: :create
   before_action :set_user, only: [:show, :update, :destroy]
 
