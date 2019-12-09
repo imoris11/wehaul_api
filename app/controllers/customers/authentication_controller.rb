@@ -1,4 +1,4 @@
-class Customers::AuthenticationController < ApplicationController
+class Customers::AuthenticationController < Customers::BaseController
     skip_before_action :authorize_request, only: :authenticate
     def authenticate 
         auth_token = AuthenticateUser.new(auth_params[:email], auth_params[:password]).call

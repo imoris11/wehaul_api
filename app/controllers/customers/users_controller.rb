@@ -1,4 +1,4 @@
-class Customers::UsersController < ApplicationController
+class Customers::UsersController < Customers::BaseController
   skip_before_action :authorize_request, only: :create
   before_action :set_user, only: [:show, :update, :destroy]
 
@@ -23,11 +23,8 @@ class Customers::UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    if @user.update(user_params)
-      render json: @user
-    else
-      render json: @user.errors, status: :unprocessable_entity
-    end
+    @user.update!(user_params)
+    json_response(@user)
   end
 
   # DELETE /users/1

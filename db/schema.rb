@@ -10,38 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_24_084106) do
+ActiveRecord::Schema.define(version: 2019_12_08_171024) do
 
-  create_table "articles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "title"
-    t.text "content"
-    t.text "photo_caption"
-    t.text "header_photo"
-    t.bigint "category_id", null: false
-    t.text "token"
-    t.bigint "user_id", null: false
-    t.integer "views"
+  create_table "drivers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.text "address"
+    t.string "vehicle_type"
+    t.text "resident_state"
+    t.string "vehicle_number"
+    t.text "preferred_distance"
+    t.text "routes"
+    t.string "drivers_license"
+    t.datetime "driver_license_expiry_date"
+    t.string "vehicle_license_number"
+    t.datetime "vehicle_license_number_expiry"
+    t.text "profile_picture"
+    t.string "account_name"
+    t.string "account_number"
+    t.string "bank_name"
+    t.string "account_type"
+    t.string "referral_name"
+    t.text "password_digest"
+    t.string "token"
+    t.string "phone_number"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["category_id"], name: "index_articles_on_category_id"
-    t.index ["user_id"], name: "index_articles_on_user_id"
-  end
-
-  create_table "categories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "title"
-    t.text "token"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "schedules", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "title"
-    t.string "header_photo"
-    t.datetime "date_time"
-    t.bigint "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_schedules_on_user_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -56,21 +50,4 @@ ActiveRecord::Schema.define(version: 2019_11_24_084106) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "videos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "title"
-    t.bigint "user_id", null: false
-    t.bigint "category_id", null: false
-    t.string "video_url"
-    t.text "token"
-    t.integer "views"
-    t.string "header_photo"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["category_id"], name: "index_videos_on_category_id"
-    t.index ["user_id"], name: "index_videos_on_user_id"
-  end
-
-  add_foreign_key "schedules", "users"
-  add_foreign_key "videos", "categories"
-  add_foreign_key "videos", "users"
 end

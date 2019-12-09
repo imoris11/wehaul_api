@@ -4,6 +4,10 @@ module ControllerSpecHelper
     def token_generator(user_id)
       JsonWebToken.encode(user_id: user_id)
     end
+
+    def driver_token_generator(id)
+      JsonWebToken.encode(driver_id: id)
+    end
   
     # generate expired tokens from user id
     def expired_token_generator(user_id)
@@ -14,6 +18,13 @@ module ControllerSpecHelper
     def valid_headers
       {
         "Authorization" => token_generator(user.id),
+        "Content-Type" => "application/json"
+      }
+    end
+     # return valid headers
+     def valid_driver_headers
+      {
+        "Authorization" => driver_token_generator(driver.id),
         "Content-Type" => "application/json"
       }
     end
