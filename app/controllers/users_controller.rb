@@ -16,6 +16,7 @@ class UsersController < ApplicationController
   # POST /users
   def create
     user = User.create!(user_params)
+    Profile.create!(user_id: user.id)
     auth_token = AuthenticateUser.new(user.email, user.password).call
     response = { message: Message.account_created, auth_token: auth_token }
     json_response(response, :created)
@@ -25,6 +26,11 @@ class UsersController < ApplicationController
   def update
     @user.update!(user_params)
     json_response(@user)
+  end
+
+  def update_profile
+    @current_user.profile.update(update_params)
+    json_response(@current_user)
   end
 
   # DELETE /users/1
@@ -41,6 +47,10 @@ class UsersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.permit(:name, :email, :password, :password_confirmation, :role, :token, :profile_picture, :num_of_articles)
+      params.permit(:name, :email, :password, :password_confirmation, :role, :admin, :phone_number)
+    end
+
+    def update_params 
+      params.permit(:address, :vehicle_type, :resident_state, :vehicle_number, :preferred_distance, :routes, :drivers_license, :driver_license_expiry_date, :vehicle_license_number, :vehicle_license_number_expiry, :profile_picture, :account_name, :account_number, :bank_name, :account_type, :referral_name)
     end
 end

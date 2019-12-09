@@ -16,13 +16,14 @@ class CreateProfiles < ActiveRecord::Migration[6.0]
       t.string :account_number
       t.string :bank_name
       t.string :account_type
-      t.references :user
+      t.references :user, null: false, foreign_key: true
       t.string :referral_name
       t.timestamps
     end
   end
 
   def down
+    drop_table :profiles
   end 
 
 end

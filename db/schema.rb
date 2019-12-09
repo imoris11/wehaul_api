@@ -12,44 +12,6 @@
 
 ActiveRecord::Schema.define(version: 2019_12_09_141638) do
 
-  create_table "admins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "role"
-    t.string "name"
-    t.text "profile_picture"
-    t.string "email"
-    t.string "password_digest"
-    t.string "token"
-    t.string "phone_number"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "drivers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name"
-    t.string "email"
-    t.text "address"
-    t.string "vehicle_type"
-    t.text "resident_state"
-    t.string "vehicle_number"
-    t.text "preferred_distance"
-    t.text "routes"
-    t.string "drivers_license"
-    t.datetime "driver_license_expiry_date"
-    t.string "vehicle_license_number"
-    t.datetime "vehicle_license_number_expiry"
-    t.text "profile_picture"
-    t.string "account_name"
-    t.string "account_number"
-    t.string "bank_name"
-    t.string "account_type"
-    t.string "referral_name"
-    t.text "password_digest"
-    t.string "token"
-    t.string "phone_number"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "profiles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "address"
     t.string "vehicle_type"
@@ -66,7 +28,7 @@ ActiveRecord::Schema.define(version: 2019_12_09_141638) do
     t.string "account_number"
     t.string "bank_name"
     t.string "account_type"
-    t.bigint "user_id"
+    t.bigint "user_id", null: false
     t.string "referral_name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -77,8 +39,6 @@ ActiveRecord::Schema.define(version: 2019_12_09_141638) do
     t.string "name"
     t.string "email"
     t.text "password_digest"
-    t.string "profile_picture"
-    t.integer "num_of_articles", default: 0
     t.string "phone_number"
     t.string "role"
     t.boolean "admin", default: false
@@ -87,4 +47,5 @@ ActiveRecord::Schema.define(version: 2019_12_09_141638) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "profiles", "users"
 end

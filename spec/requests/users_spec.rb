@@ -97,6 +97,23 @@ RSpec.describe "Users", type: :request do
       end
     end
 
+    describe "PUT /users/:token/update_profile" do
+      let(:params){{profile_picture: Faker::Avatar.image, address:Faker::Address.street_address, vehicle_license_number: '12345678' }.to_json}
+      before { put "/users/#{user_id}/update_profile", params: params, headers:headers }
+
+      context "when it is valid" do
+        it "returns a  200 status code" do
+          expect(response).to have_http_status(200)
+        end
+
+        it "returns corresponding profile" do
+          expect(json['profile']['vehicle_license_number']).to eq('12345678')
+        end
+      end
+
+    end
+
+
     describe "DELETE /users/:id" do
       before { delete "/users/#{user_id}", headers: headers }
 
