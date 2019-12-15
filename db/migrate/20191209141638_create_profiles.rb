@@ -9,8 +9,6 @@ class CreateProfiles < ActiveRecord::Migration[6.0]
       t.text :routes
       t.string :drivers_license
       t.datetime :driver_license_expiry_date
-      t.string :vehicle_license_number
-      t.datetime :vehicle_license_number_expiry
       t.text :profile_picture
       t.string :account_name
       t.string :account_number
@@ -18,6 +16,11 @@ class CreateProfiles < ActiveRecord::Migration[6.0]
       t.string :account_type
       t.references :user, null: false, foreign_key: true
       t.string :referral_name
+      t.boolean :is_active, :default => true
+      t.boolean :is_available, :default => false
+      t.boolean :is_verified, :default => true
+      t.boolean :is_busy
+      t.boolean :is_confirmed, :default => false
       t.timestamps
     end
   end

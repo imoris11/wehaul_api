@@ -7,6 +7,7 @@ class CreateUsers < ActiveRecord::Migration[6.0]
       t.string :phone_number
       t.string :role
       t.boolean :admin, :default => false
+      t.integer :user_type
       t.text :token
       t.timestamps
     end

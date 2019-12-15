@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
-    @users = User.all
+    @users = User.all.paginate(page:params[:page], per_page:20)
     json_response(@users)
   end
 
@@ -16,7 +16,6 @@ class UsersController < ApplicationController
   # POST /users
   def create
     user = User.create!(user_params)
-    Profile.create!(user_id: user.id)
     auth_token = AuthenticateUser.new(user.email, user.password).call
     response = { message: Message.account_created, auth_token: auth_token }
     json_response(response, :created)
@@ -51,6 +50,6 @@ class UsersController < ApplicationController
     end
 
     def update_params 
-      params.permit(:address, :vehicle_type, :resident_state, :vehicle_number, :preferred_distance, :routes, :drivers_license, :driver_license_expiry_date, :vehicle_license_number, :vehicle_license_number_expiry, :profile_picture, :account_name, :account_number, :bank_name, :account_type, :referral_name)
+      params.permit(:address, :resident_state,  :preferred_distance, :routes, :drivers_license, :driver_license_expiry_date,   :profile_picture, :account_name, :account_number, :bank_name, :account_type, :referral_name)
     end
 end
