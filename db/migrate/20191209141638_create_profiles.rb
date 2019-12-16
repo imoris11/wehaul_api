@@ -4,6 +4,8 @@ class CreateProfiles < ActiveRecord::Migration[6.0]
       t.text :address
       t.string :vehicle_type
       t.text :resident_state
+      t.string :city
+      t.string :country
       t.string :vehicle_number
       t.text :preferred_distance
       t.text :routes

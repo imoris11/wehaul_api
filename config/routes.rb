@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
   
+  resources :support_tickets
+  resources :trip_activities
+  resources :driver_payments
+  resources :routes
+  resources :payment_transactions
+  resources :wallets
+  resources :notifications
+  resources :driver_requests
   resources :trip_requests
   resources :vehicle_images
   resources :vehicles
