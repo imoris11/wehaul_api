@@ -14,7 +14,7 @@ class RoutesController < ApplicationController
 
   # POST /routes
   def create
-    @route = Route.new(route_params)
+    @route = Route.create!(route_params)
     json_response(@route, :created)
   end
 
@@ -27,7 +27,7 @@ class RoutesController < ApplicationController
   # DELETE /routes/1
   def destroy
     @route.destroy
-    head :content
+    head :no_content
   end
 
   private

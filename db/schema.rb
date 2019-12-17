@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(version: 2019_12_15_210343) do
   create_table "notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "target"
     t.text "message"
-    t.boolean "is_read"
+    t.boolean "is_read", default: false
     t.bigint "user_id", null: false
     t.string "token"
     t.datetime "created_at", precision: 6, null: false
@@ -114,7 +114,7 @@ ActiveRecord::Schema.define(version: 2019_12_15_210343) do
   end
 
   create_table "trip_activities", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "action"
+    t.string "activity"
     t.bigint "trip_request_id", null: false
     t.bigint "user_id", null: false
     t.boolean "mark_as_responded"
@@ -219,7 +219,7 @@ ActiveRecord::Schema.define(version: 2019_12_15_210343) do
     t.text "payment_reference"
     t.boolean "is_valid"
     t.string "source"
-    t.string "type"
+    t.string "deposit_type"
     t.string "token"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

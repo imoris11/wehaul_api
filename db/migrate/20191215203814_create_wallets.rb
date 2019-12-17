@@ -9,7 +9,7 @@ class CreateWallets < ActiveRecord::Migration[6.0]
       t.text :payment_reference
       t.boolean :is_valid
       t.string :source
-      t.string :type
+      t.string :deposit_type
       t.string :token
       t.timestamps
     end

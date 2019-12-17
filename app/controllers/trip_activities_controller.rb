@@ -38,6 +38,6 @@ class TripActivitiesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def trip_activity_params
-      params.permit(:action, :trip_request_id, :user_id, :mark_as_responded)
+      params.permit(:activity, :trip_request_id, :user_id, :mark_as_responded)
     end
 end

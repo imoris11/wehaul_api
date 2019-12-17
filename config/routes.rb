@@ -5,7 +5,12 @@ Rails.application.routes.draw do
   resources :driver_payments
   resources :routes
   resources :payment_transactions
-  resources :wallets
+  resources :wallets do
+    collection do
+      get :balance
+      put :update_balance
+    end
+  end
   resources :notifications
   resources :driver_requests
   resources :trip_requests

@@ -18,6 +18,17 @@ class WalletsController < ApplicationController
     json_response(@wallet)
   end
 
+  def balance 
+    json_response(current_user.wallet)
+  end
+
+  def update_balance
+    prev_balance = current_user.wallet.current_balance
+    amount = current_user.wallet.current_balance + params[:amount]
+    current_user.wallet.update!({current_balance: amount, created_by:params[:created_by], prev_balance:prev_balance, amount: params[:amount] })
+    json_response(current_user.wallet)
+  end
+
   # DELETE /wallets/1
   def destroy
     @wallet.destroy
@@ -32,6 +43,6 @@ class WalletsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def wallet_params
-      params.permit(:created_by, :amount, :prev_balance, :current_balance, :payment_reference, :is_valid, :source, :type)
+      params.permit(:created_by, :amount, :payment_reference, :is_valid, :source, :deposit_type)
     end
 end
