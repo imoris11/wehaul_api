@@ -18,6 +18,19 @@ RSpec.describe "TripActivities", type: :request do
     end
   end
 
+  describe "GET user trips" do
+    before { get "/trip_activities/all_activities", headers: headers }
+
+    it "returns a 200 status code" do
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns 10 activities" do
+      expect(json.size).to eq(10)
+    end
+  end
+
+
   describe "GET /trip_activities/:token" do
     context "when the token is valid" do
       before { get "/trip_activities/#{activity_id}", headers:headers }

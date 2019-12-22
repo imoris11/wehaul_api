@@ -152,6 +152,8 @@ ActiveRecord::Schema.define(version: 2019_12_15_210343) do
     t.float "trip_amount"
     t.text "contact_address"
     t.string "pickup_time"
+    t.string "loader"
+    t.string "contact_name"
     t.string "token"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

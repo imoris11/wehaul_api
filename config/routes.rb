@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   
   resources :support_tickets
-  resources :trip_activities
+  resources :trip_activities do
+    collection do
+      get :all_activities
+    end
+  end
   resources :driver_payments
   resources :routes
   resources :payment_transactions
@@ -13,7 +17,22 @@ Rails.application.routes.draw do
   end
   resources :notifications
   resources :driver_requests
-  resources :trip_requests
+  resources :trip_requests do
+    collection do
+      get :trips
+      get :trips_stats
+      get :request_stats
+      get :cancelled_requests
+      get :active_requests 
+      get :completed_trips
+      get :cancelled_trips
+      get :pending_trips
+      get :on_going_trips
+    end
+    member do
+      get :activities 
+    end
+  end
   resources :vehicle_images
   resources :vehicles
   resources :vehicle_types

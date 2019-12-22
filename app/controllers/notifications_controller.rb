@@ -3,7 +3,7 @@ class NotificationsController < ApplicationController
 
   # GET /notifications
   def index
-    @notifications = Notification.all.paginate(page:params[:id], per_page:20)
+    @notifications = current_user.notifications.paginate(page:params[:id], per_page:20)
     json_response(@notifications)
   end
 
@@ -21,6 +21,7 @@ class NotificationsController < ApplicationController
   # DELETE /notifications/1
   def destroy
     @notification.destroy
+    head :no_content
   end
 
   private

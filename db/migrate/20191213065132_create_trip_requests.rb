@@ -27,6 +27,8 @@ class CreateTripRequests < ActiveRecord::Migration[6.0]
       t.float :trip_amount
       t.text :contact_address
       t.string :pickup_time
+      t.string :loader
+      t.string :contact_name
       t.string :token
       t.timestamps
     end

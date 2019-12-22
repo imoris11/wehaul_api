@@ -7,6 +7,11 @@ class TripActivitiesController < ApplicationController
     json_response(@trip_activities)
   end
 
+  def all_activities
+    trip_activities = current_user.trip_activities.paginate(page: params[:page], per_page:20)
+    json_response(trip_activities)
+  end
+
   # GET /trip_activities/1
   def show
     json_response(@trip_activity) 
@@ -14,7 +19,7 @@ class TripActivitiesController < ApplicationController
 
   # POST /trip_activities
   def create
-    @trip_activity = current_user.trip_activities.create!(trip_activity_params)
+    @trip_activity = TripActivity.create!(trip_activity_params)
     json_response(@trip_activity, :created)
   end
 

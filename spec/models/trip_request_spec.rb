@@ -4,7 +4,7 @@ RSpec.describe TripRequest, type: :model do
   #validate relationships
  it { should belong_to(:user) }
  it { should belong_to(:vehicle_type) }
-
+ it { should have_many(:trip_activities).dependent(:destroy) }
  #validate presence of necessary data
  it { should validate_presence_of(:fee) }
  it { should validate_presence_of(:weight) }
