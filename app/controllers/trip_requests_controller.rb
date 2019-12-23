@@ -34,7 +34,7 @@ class TripRequestsController < ApplicationController
     @completed = current_user.trip_requests.completed.requests.count
     @cancelled = current_user.trip_requests.cancelled.requests.count
     @active = current_user.trip_requests.active.requests.count
-    @stats = current_user.trip_requests.trips.group_by_month(:created_at, format: "%b", reverse:true).count
+    @stats = current_user.trip_requests.requests.group_by_month(:created_at, format: "%b", reverse:true).count
     @response = { all: @all, completed: @completed, cancelled: @cancelled, active: @active, requests: @stats }
     json_response(@response)
   end

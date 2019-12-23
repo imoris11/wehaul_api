@@ -17,4 +17,13 @@ users.each do |user|
   5.times do
     request = user.trip_requests.create({vehicle_type_id:vehicle_type.id, fee:1400, weight: 12, pickup_time: '10AM', pickup_date: Time.now, quantity:2, driver_id:user.id })
   end
+  5.times do
+    request = user.trip_requests.create({vehicle_type_id:vehicle_type.id, fee:5020, weight: 12, pickup_time: '12PM', pickup_date: Time.now, quantity:2, driver_id:user.id, status:'completed' })
+  end
+  5.times do
+    request = user.trip_requests.create({vehicle_type_id:vehicle_type.id, fee:5000, weight: 12, pickup_time: '9AM', pickup_date: Time.now+2.days, quantity:2, driver_id:user.id, status: 'cancelled' })
+  end
+  10.times do
+    request = user.trip_requests.create({vehicle_type_id:vehicle_type.id, fee:30000, weight: 12, pickup_time: '11AM', pickup_date: Time.now+3.days, quantity:2, driver_id:user.id, status: 'on_going' })
+  end
 end
