@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   skip_before_action :authorize_request, only: :create
-  before_action :set_user, only: [:show, :update, :destroy]
+  before_action :set_user, only: [:show, :update, :destroy, :update_profile]
 
   # GET /users
   def index
@@ -28,7 +28,7 @@ class UsersController < ApplicationController
   end
 
   def update_profile
-    @current_user.profile.update(update_params)
+    @user.profile.update(update_params)
     json_response(@current_user)
   end
 
