@@ -12,6 +12,10 @@ class NotificationsController < ApplicationController
     json_response(@notification)
   end
 
+  def update
+    @notification.update!(notification_params)
+    json_response(@notification)
+  end
   # POST /notifications
   def create
     @notification = Notification.create!(notification_params)
@@ -32,6 +36,6 @@ class NotificationsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def notification_params
-      params.require(:notification).permit(:target, :message, :is_read, :user_id)
+      params.permit(:target, :message, :is_read, :user_id)
     end
 end

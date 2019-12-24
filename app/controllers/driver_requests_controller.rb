@@ -3,7 +3,7 @@ class DriverRequestsController < ApplicationController
 
   # GET /driver_requests
   def index
-    @driver_requests = DriverRequest.all
+    @driver_requests = DriverRequest.all.paginate(page:params[:page], per_page:20)
     json_response(@driver_requests)
   end
 
@@ -14,7 +14,7 @@ class DriverRequestsController < ApplicationController
 
   # POST /driver_requests
   def create
-    @driver_request = current_user.driver_requests.create!(driver_request_params)
+    @driver_request = DriverRequest.create!(driver_request_params)
     json_response(@driver_request, :created)
   end
 
