@@ -24,6 +24,11 @@ users.each do |user|
     request = user.trip_requests.create({vehicle_type_id:vehicle_type.id, fee:5000, weight: 12, pickup_time: '9AM', pickup_date: Time.now+2.days, quantity:2, driver_id:user.id, status: 'cancelled' })
   end
   10.times do
-    request = user.trip_requests.create({vehicle_type_id:vehicle_type.id, fee:30000, weight: 12, pickup_time: '11AM', pickup_date: Time.now+3.days, quantity:2, driver_id:user.id, status: 'on_going' })
+    reqs = user.trip_requests.create({vehicle_type_id:vehicle_type.id, fee:30000, weight: 12, pickup_time: '11AM', pickup_date: Time.now+3.days, quantity:2, driver_id:user.id, status: 'on_going' })
+  end
+
+  10.times do
+    req = user.trip_requests.create({vehicle_type_id:vehicle_type.id, fee:30000, weight: 12, pickup_time: '11AM', pickup_date: Time.now+3.days, quantity:2, driver_id:user.id, status: 'on_going' })
+    trip_activities = user.trip_activities.create({ activity: "Assigned trip to a driver", trip_request_id:req.id })
   end
 end
