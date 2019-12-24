@@ -6,7 +6,11 @@ Rails.application.routes.draw do
       get :all_activities
     end
   end
-  resources :driver_payments
+  resources :driver_payments do
+    collection do
+      get :own #drivers own payments
+    end
+  end
   resources :routes
   resources :payment_transactions
   resources :wallets do

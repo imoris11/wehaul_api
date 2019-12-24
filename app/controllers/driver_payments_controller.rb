@@ -12,9 +12,14 @@ class DriverPaymentsController < ApplicationController
     json_response(@driver_payment)
   end
 
+  def own
+    payments = current_user.driver_payments.paginate(page:params[:page], per_page:20)
+    json_response(payments)
+  end 
+
   # POST /driver_payments
   def create
-    @driver_payment = current_user.driver_payments.create!(driver_payment_params)
+    @driver_payment = DriverPayment.create!(driver_payment_params)
     json_response(@driver_payment, :created)
   end
 
