@@ -29,7 +29,7 @@ class UsersController < ApplicationController
 
   def update_profile
     @user.profile.update(update_params)
-    json_response(@current_user)
+    json_response(@user)
   end
 
   # DELETE /users/1
