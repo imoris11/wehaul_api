@@ -7,11 +7,11 @@ class PaymentTransactionsController < ApplicationController
     json_response( @payment_transactions)
   end
 
-  def verify_payment
+  def wallet_topup
     paystackObj =  Paystack.new
     transactions = PaystackTransactions.new(paystackObj)
     result = transactions.verify(params[:trxRef])
-    if result['data']['status'] == "success" 
+    if result['data']['status'] == "success" && result['data']['amount'] == params[:amount]
       depositAmount = result['data']['amount']/100
       current_user.payment_transactions.create(medium:result['data']['channel'], amount: depositAmount, transaction_ref: result['data']['reference'])
       prev_balance = current_user.wallet.current_balance

@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
   resources :payment_transactions do
     collection do
-      get :verify_payment
+      post :wallet_topup
     end
   end
   
