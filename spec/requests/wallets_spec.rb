@@ -13,7 +13,7 @@ RSpec.describe "Wallets", type: :request do
 
   describe "GET user balance" do
     context "when the user is just created" do
-      before { get "/wallets/balance", headers:headers }
+      before { get "/wallets", headers:headers }
       it "returns a balance of 0" do
         expect(json['current_balance']).to eq(0)
       end

@@ -1,24 +1,7 @@
 class WalletsController < ApplicationController
-  before_action :set_wallet, only: [:show, :update, :destroy]
+  before_action :set_wallet, only: [ :destroy]
 
-  # GET /wallets
-  def index
-    @wallets = Wallet.all.paginate(page:params[:page], per_page:20)
-    json_response(@wallets)
-  end
-
-  # GET /wallets/1
-  def show
-    json_response(@wallet)
-  end
-
-  # PATCH/PUT /wallets/1
-  def update
-    @wallet.update!(wallet_params)
-    json_response(@wallet)
-  end
-
-  def balance 
+  def index 
     json_response(current_user.wallet)
   end
 
