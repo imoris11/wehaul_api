@@ -21,6 +21,6 @@ class User < ApplicationRecord
     end
 
     def create_wallet 
-        Wallet.create(user_id: self.id, created_by: self.id, amount:0, current_balance:0, prev_balance:0, source:'Account creation', deposit_type: 'Initial deposit', payment_reference: '0000') if self.customer?
+        Wallet.create(user_id: self.id, current_balance:0) if self.customer?
     end
 end

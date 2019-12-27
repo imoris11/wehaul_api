@@ -17,6 +17,17 @@ RSpec.describe "PaymentTransactions", type: :request do
     end
   end
 
+  describe "GET own payments" do
+    before { get "/payment_transactions/own", headers:headers } 
+    it "returns a 200 status code" do
+      expect(response).to have_http_status(200)
+    end
+
+    it "returns 10 payments" do
+      expect(json.size).to eq(10)
+    end
+  end
+
   describe "GET /payment_transactions/:token" do
     context "when the token is valid" do
       before { get "/payment_transactions/#{payment_id}", headers:headers }

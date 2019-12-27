@@ -13,15 +13,19 @@ class PaymentTransactionsController < ApplicationController
     result = transactions.verify(params[:trxRef])
     if result['data']['status'] == "success" && result['data']['amount'] == params[:amount]
       depositAmount = result['data']['amount']/100
-      current_user.payment_transactions.create(medium:result['data']['channel'], amount: depositAmount, transaction_ref: result['data']['reference'])
-      prev_balance = current_user.wallet.current_balance
+      current_user.payment_transactions.create(medium:result['data']['channel'], amount: depositAmount, transaction_ref: result['data']['reference'], message:"wallet topup using paystack", deposit_type: "wallet topup")
       amount = current_user.wallet.current_balance + depositAmount
-      current_user.wallet.update!({current_balance: amount, created_by:current_user.id, prev_balance:prev_balance, amount: depositAmount })
+      current_user.wallet.update!({current_balance: amount })
       json_response({result:result, balance:current_user.wallet.current_balance, transactions: current_user.payment_transactions.count })
     else
       json_response(result)
     end
    
+  end
+
+  def own 
+    @transactions = current_user.payment_transactions.paginate(page: params[:page], per_page:20)
+    json_response(@transactions)
   end
 
   # GET /payment_transactions/1
@@ -55,6 +59,6 @@ class PaymentTransactionsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def payment_transaction_params
-      params.permit(:user_id, :transaction_ref, :medium, :amount)
+      params.permit(:user_id, :transaction_ref, :medium, :amount, :message, :deposit_type)
     end
 end

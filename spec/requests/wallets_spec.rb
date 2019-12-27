@@ -20,14 +20,10 @@ RSpec.describe "Wallets", type: :request do
     end
 
     context "when the wallet has been updated" do
-      let(:params){{created_by: user.id, amount:50000 }.to_json}
+      let(:params){{amount:50000 }.to_json}
       before {put "/wallets/update_balance", params:params, headers:headers}
       it "should return updated balance" do
         expect(json['current_balance']).to eq(50000)
-      end
-      
-      it "should return the right prev balance" do
-        expect(json['prev_balance']).to eq(0)
       end
     end
 

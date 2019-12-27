@@ -1,4 +1,4 @@
-users = User.create([{name:'Eniola Roland', email: 'customer@wehaul.ng', role:'customer', user_type:'customer', password: 'Password', password_confirmation: 'Password', phone_number: '080323423422'}, {name:'Richard Igbiriki', email: 'admin@wehaul.ng', role:'admin', password: 'Password', password_confirmation: 'Password', phone_number:'090312345678', user_type:'admin'} ])
+users = User.create([{name:'Eniola Roland', email: 'customer@wehaul.ng', role:'customer', user_type:'customer', password: 'Password', password_confirmation: 'Password', phone_number: '080323423422'}, {name:'Richard Igbiriki', email: 'admin@wehaul.ng', role:'admin', password: 'Password', password_confirmation: 'Password', phone_number:'090312345678', user_type:'admin'}, {name:'Driver User', email: 'driver@wehaul.ng', role:'driver', user_type:'driver', password: 'Password', password_confirmation: 'Password', phone_number: '0803234234221'}, ])
 vehicle_type = VehicleType.create({name:'Lorry', description: "This is a lorry", max_price_per_km:1000, min_price_per_km:100})
 users.each do |user| 
   puts "Creating for #{user.name}"

@@ -57,6 +57,8 @@ ActiveRecord::Schema.define(version: 2019_12_15_210343) do
     t.string "transaction_ref"
     t.string "medium"
     t.float "amount"
+    t.string "deposit_type"
+    t.string "message"
     t.string "token"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -215,13 +217,7 @@ ActiveRecord::Schema.define(version: 2019_12_15_210343) do
   create_table "wallets", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.integer "created_by"
-    t.float "amount"
-    t.float "prev_balance"
     t.float "current_balance"
-    t.text "payment_reference"
-    t.boolean "is_valid"
-    t.string "source"
-    t.string "deposit_type"
     t.string "token"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
