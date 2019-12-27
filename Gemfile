@@ -10,6 +10,8 @@ gem 'rails', '~> 6.0.1'
 gem 'groupdate'
 # Use mysql as the database for Active Record
 gem 'mysql2'
+#paystack for verifying payments
+gem 'paystack'
 # Use Puma as the app server
 gem 'puma', '~> 4.3'
 #add faker gem

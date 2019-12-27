@@ -12,7 +12,13 @@ Rails.application.routes.draw do
     end
   end
   resources :routes
-  resources :payment_transactions
+
+  resources :payment_transactions do
+    collection do
+      get :verify_payment
+    end
+  end
+  
   resources :wallets do
     collection do
       get :balance

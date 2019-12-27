@@ -1,10 +1,27 @@
 class PaymentTransactionsController < ApplicationController
-  before_action :set_payment_transaction, only: [:show, :update, :destroy]
 
+  before_action :set_payment_transaction, only: [:show, :update, :destroy]
   # GET /payment_transactions
   def index
     @payment_transactions = PaymentTransaction.all.paginate(page: params[:page], per_page:20)
     json_response( @payment_transactions)
+  end
+
+  def verify_payment
+    paystackObj =  Paystack.new
+    transactions = PaystackTransactions.new(paystackObj)
+    result = transactions.verify(params[:trxRef])
+    if result['data']['status'] == "success" 
+      depositAmount = result['data']['amount']/100
+      current_user.payment_transactions.create(medium:result['data']['channel'], amount: depositAmount, transaction_ref: result['data']['reference'])
+      prev_balance = current_user.wallet.current_balance
+      amount = current_user.wallet.current_balance + depositAmount
+      current_user.wallet.update!({current_balance: amount, created_by:current_user.id, prev_balance:prev_balance, amount: depositAmount })
+      json_response({result:result, balance:current_user.wallet.current_balance, transactions: current_user.payment_transactions.count })
+    else
+      json_response(result)
+    end
+   
   end
 
   # GET /payment_transactions/1
