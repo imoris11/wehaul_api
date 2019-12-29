@@ -38,6 +38,6 @@ class VehicleTypesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def vehicle_type_params
-      params.permit(:name, :description, :max_price_per_km, :min_price_per_km, :icon)
+      params.permit(:name, :description, :max_price_per_km, :min_price_per_km, :icon, :commission_rate)
     end
 end

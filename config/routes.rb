@@ -47,12 +47,34 @@ Rails.application.routes.draw do
   resources :vehicle_images
   resources :vehicles
   resources :vehicle_types
-  #users routes
-    resources :users do
-      member do
-        put :update_profile
-      end
+  resources :users do
+    member do
+      put :update_profile
     end
-    post 'signup', to: 'users#create'
-    post "auth/login", to: "authentication#authenticate"
+  end
+
+  resources :admins do
+    collection do
+      #trip and requests for admins
+      get :requests
+      get :trips
+      get :trips_stats
+      get :request_stats
+      get :cancelled_requests
+      get :active_requests 
+      get :completed_trips
+      get :cancelled_trips
+      get :pending_trips
+      get :on_going_trips
+      get :monthly_trips
+      post :create_request
+    end
+    member do
+      get :show_request
+      get :activities
+      put :update_request
+    end
+  end
+  post 'signup', to: 'users#create'
+  post "auth/login", to: "authentication#authenticate"
 end

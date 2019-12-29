@@ -13,7 +13,7 @@ class CreateTripRequests < ActiveRecord::Migration[6.0]
       t.float :weight
       t.text :description
       t.integer :quantity
-      t.integer :vechicles_qty
+      t.integer :vehicles_qty
       t.integer :driver_id
       t.integer :created_by
       t.integer :status

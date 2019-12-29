@@ -140,7 +140,7 @@ ActiveRecord::Schema.define(version: 2019_12_15_210343) do
     t.float "weight"
     t.text "description"
     t.integer "quantity"
-    t.integer "vechicles_qty"
+    t.integer "vehicles_qty"
     t.integer "driver_id"
     t.integer "created_by"
     t.integer "status"
