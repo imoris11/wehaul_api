@@ -1,4 +1,4 @@
-class AdminsController < ApplicationController
+class Admins::RequestsController < ApplicationController
   before_action :set_trip_request, only: [:show_request, :update_request, :activities]
   # get all requests
   def requests

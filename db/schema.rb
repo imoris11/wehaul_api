@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(version: 2019_12_15_210343) do
 
   create_table "profiles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "address"
+    t.string "gender"
     t.string "vehicle_type"
     t.text "resident_state"
     t.string "city"
@@ -83,10 +84,8 @@ ActiveRecord::Schema.define(version: 2019_12_15_210343) do
     t.string "account_type"
     t.bigint "user_id", null: false
     t.string "referral_name"
-    t.boolean "is_active", default: true
-    t.boolean "is_available", default: false
+    t.integer "status"
     t.boolean "is_verified", default: true
-    t.boolean "is_busy"
     t.boolean "is_confirmed", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -168,6 +167,8 @@ ActiveRecord::Schema.define(version: 2019_12_15_210343) do
     t.string "email"
     t.text "password_digest"
     t.string "phone_number"
+    t.boolean "banned", default: false
+    t.boolean "busy", default: false
     t.string "role"
     t.boolean "admin", default: false
     t.integer "user_type"

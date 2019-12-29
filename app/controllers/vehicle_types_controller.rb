@@ -12,6 +12,15 @@ class VehicleTypesController < ApplicationController
    json_response(@vehicle_type)
   end
 
+  def stats 
+    customers = User.customer.count
+    drivers = User.driver.count
+    active = TripRequest.active.trips.count 
+    completed = TripRequest.completed.trips.count
+    response ={ users:customers, drivers:drivers, active: active, completed: completed}
+    json_response(response)
+  end
+
   # POST /vehicle_types
   def create
     @vehicle_type = VehicleType.create!(vehicle_type_params)

@@ -4,6 +4,8 @@ FactoryBot.define do
     weight {10}
     pickup_time {'10AM'}
     pickup_date {Time.now}
+    destination_address {"Yenagoa, Bayelsa State"}
+    pickup_address {"Gbagada, Lagos"}
     quantity {5}
     driver_id {1}
     commission {50}

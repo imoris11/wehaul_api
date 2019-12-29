@@ -12,6 +12,15 @@ class RoutesController < ApplicationController
     json_response(@route)
   end
 
+  def stats 
+    routes = Route.all.count
+    drivers = User.driver.count
+    vehicles = VehicleType.all.count 
+    requests = TripRequest.requests.count
+    response ={ routes:routes, drivers:drivers, vehicles: vehicles, requests: requests}
+    json_response(response)
+  end
+
   # POST /routes
   def create
     @route = Route.create!(route_params)

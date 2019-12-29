@@ -32,3 +32,11 @@ users.each do |user|
     trip_activities = user.trip_activities.create({ activity: "Assigned trip to a driver", trip_request_id:req.id })
   end
 end
+
+5.times do 
+  User.create({name:Faker::Name.name, email: Faker::Internet.email, role:'customer', user_type:'customer', password: 'Password', password_confirmation: 'Password', phone_number: '080323423422'})
+end
+
+5.times do
+  User.create({name:Faker::Name.name, email: Faker::Internet.email, role:'driver', user_type:'driver', password: 'Password', password_confirmation: 'Password', phone_number: '080323423422'})
+end

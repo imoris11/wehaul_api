@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "TripRequests", type: :request do
+RSpec.describe "Requests", type: :request do
   let!(:user){ create(:user) }
   let!(:vehicle){ create(:vehicle_type) }
   let!(:requests){ create_list(:trip_request, 10, user_id: user.id, vehicle_type_id: vehicle.id, driver_id:nil)}
@@ -9,7 +9,7 @@ RSpec.describe "TripRequests", type: :request do
   let(:headers){valid_headers}
 
   describe "GET trips" do
-    before {get "/admins/trips", headers:headers }
+    before {get "/admins/requests/trips", headers:headers }
     context "when it works" do
       it "returns a 200 status code" do
         expect(response).to have_http_status(200)
@@ -22,7 +22,7 @@ RSpec.describe "TripRequests", type: :request do
   end
 
   describe "GET requests" do
-    before {get "/admins/requests", headers:headers }
+    before {get "/admins/requests/requests", headers:headers }
     context "when it works" do
       it "returns a 200 status code" do
         expect(response).to have_http_status(200)
@@ -34,8 +34,8 @@ RSpec.describe "TripRequests", type: :request do
     end
   end
 
-  describe "GET /admins/:token/show_request" do
-    before { get "/admins/#{request_id}/show_request", headers:headers}
+  describe "GET /admins/requests/:token/show_request" do
+    before { get "/admins/requests/#{request_id}/show_request", headers:headers}
 
     context "when token is valid" do
       it "returns a 200 status code" do
@@ -49,7 +49,7 @@ RSpec.describe "TripRequests", type: :request do
 
     context "when token is invalid" do
       let(:request_id){100}
-      before {get  "/admins/#{request_id}/show_request", headers:headers }
+      before {get  "/admins/requests/#{request_id}/show_request", headers:headers }
       it "returns a 404 status code" do
         expect(response).to have_http_status(404)
       end
@@ -60,10 +60,10 @@ RSpec.describe "TripRequests", type: :request do
     end
   end
 
-  describe "POST /admins/create_request" do
+  describe "POST /admins/requests/create_request" do
     let(:params){{fee:1000, user_id:user.id, vehicle_type_id:vehicle.id, weight:20, pickup_time: '12PM', pickup_date:Time.now, quantity:5, commission:240}.to_json}
     context "when it is a valid request" do
-      before {post "/admins/create_request", params: params, headers:headers}
+      before {post "/admins/requests/create_request", params: params, headers:headers}
       it "returns a 201 status code" do
         expect(response).to have_http_status(201)
       end
@@ -75,7 +75,7 @@ RSpec.describe "TripRequests", type: :request do
 
     context "when it is an invalid request" do
       let(:params){{fee:1000, weight:20, pickup_time: '12PM', vehicle_type_id:vehicle.id}.to_json}
-      before {post "/admins/create_request", params:params, headers:headers}
+      before {post "/admins/requests/create_request", params:params, headers:headers}
       it "returns a 422 error code" do
         expect(response).to have_http_status(422)
       end
@@ -86,9 +86,9 @@ RSpec.describe "TripRequests", type: :request do
     end
   end
 
-  describe "PUT /admins/:token/update_request" do
+  describe "PUT /admins/requests/:token/update_request" do
     let(:params){{fee:1200, weight:250, status:'completed'}.to_json}
-    before {put "/admins/#{request_id}/update_request", params:params, headers:headers}
+    before {put "/admins/requests/#{request_id}/update_request", params:params, headers:headers}
 
     context "when it is a valid update request" do
       it "returns a 200 status code" do
@@ -106,7 +106,7 @@ RSpec.describe "TripRequests", type: :request do
   end
 
   describe "GET stats for requests" do
-    before {get "/admins/request_stats", headers:headers}
+    before {get "/admins/requests/request_stats", headers:headers}
 
     it "should return a 200 status" do
       expect(response).to have_http_status(200)
@@ -127,7 +127,7 @@ RSpec.describe "TripRequests", type: :request do
   end
 
   describe "GET trips" do
-    before{ get "/admins/trips", headers:headers }
+    before{ get "/admins/requests/trips", headers:headers }
     
     it "should return a 200 status code" do
       expect(response).to have_http_status(200)
@@ -140,7 +140,7 @@ RSpec.describe "TripRequests", type: :request do
   end
 
   describe "GET stats for trips" do
-    before {get "/admins/trips_stats", headers: headers }
+    before {get "/admins/requests/trips_stats", headers: headers }
 
     it "returns a 200 status code" do
       expect(response).to have_http_status(200)
@@ -160,7 +160,7 @@ RSpec.describe "TripRequests", type: :request do
   end
 
   describe "GET cancelled requests" do
-    before { get "/admins/cancelled_requests", headers:headers }
+    before { get "/admins/requests/cancelled_requests", headers:headers }
     it "returns a 200 status code" do
       expect(response).to have_http_status(200)
     end
@@ -171,7 +171,7 @@ RSpec.describe "TripRequests", type: :request do
   end
 
   describe "GET active requests" do
-    before { get "/admins/active_requests", headers:headers }
+    before { get "/admins/requests/active_requests", headers:headers }
     it "returns a 200 status code" do
       expect(response).to have_http_status(200)
     end
@@ -183,7 +183,7 @@ RSpec.describe "TripRequests", type: :request do
 
   describe "GET completed trips" do
     context "when there are no completed trips" do
-      before { get "/admins/completed_trips", headers:headers }
+      before { get "/admins/requests/completed_trips", headers:headers }
       it "returns a 200 status code" do
         expect(response).to have_http_status(200)
       end
@@ -193,7 +193,7 @@ RSpec.describe "TripRequests", type: :request do
     end
     context "when there are completed trips" do
       let!(:trips){ create_list(:trip_request, 5, user_id: user.id, vehicle_type_id: vehicle.id, driver_id:user.id, status: 'completed')}
-      before { get "/admins/completed_trips", headers:headers }
+      before { get "/admins/requests/completed_trips", headers:headers }
       it "returns 200 status code" do
         expect(response).to have_http_status(200)
       end 
@@ -206,7 +206,7 @@ RSpec.describe "TripRequests", type: :request do
 
   describe "GET pending trips" do
     context "when there are no pending trips" do
-      before { get "/admins/pending_trips", headers:headers }
+      before { get "/admins/requests/pending_trips", headers:headers }
       it "returns a 200 status code" do
         expect(response).to have_http_status(200)
       end
@@ -218,7 +218,7 @@ RSpec.describe "TripRequests", type: :request do
 
   describe "GET on_going trips" do
     context "when there are no on_going trips" do
-      before { get "/admins/on_going_trips", headers:headers }
+      before { get "/admins/requests/on_going_trips", headers:headers }
       it "returns a 200 status code" do
         expect(response).to have_http_status(200)
       end
@@ -228,7 +228,7 @@ RSpec.describe "TripRequests", type: :request do
     end
     context "when there are on_going trips" do
       let!(:trips){ create_list(:trip_request, 5, user_id: user.id, vehicle_type_id: vehicle.id, driver_id:user.id, status: 'on_going')}
-      before { get "/admins/on_going_trips", headers:headers }
+      before { get "/admins/requests/on_going_trips", headers:headers }
       it "returns 200 status code" do
         expect(response).to have_http_status(200)
       end 
@@ -240,7 +240,7 @@ RSpec.describe "TripRequests", type: :request do
 
   describe "GET cancelled trips" do
     context "when there are no cancelled trips" do
-      before { get "/admins/cancelled_trips", headers:headers }
+      before { get "/admins/requests/cancelled_trips", headers:headers }
       it "returns a 200 status code" do
         expect(response).to have_http_status(200)
       end
@@ -250,7 +250,7 @@ RSpec.describe "TripRequests", type: :request do
     end
     context "when there are completed trips" do
       let!(:trips){ create_list(:trip_request, 5, user_id: user.id, vehicle_type_id: vehicle.id, driver_id:user.id, status: 'cancelled')}
-      before { get "/admins/cancelled_trips", headers:headers }
+      before { get "/admins/requests/cancelled_trips", headers:headers }
       it "returns 200 status code" do
         expect(response).to have_http_status(200)
       end 
@@ -261,7 +261,7 @@ RSpec.describe "TripRequests", type: :request do
   end
   describe "GET trip activities" do
     let!(:activities){create_list(:trip_activity, 5, user_id:user.id, trip_request_id: trips.first.id)}
-    before { get "/admins/#{trips.first.token}/activities", headers:headers }
+    before { get "/admins/requests/#{trips.first.token}/activities", headers:headers }
     it "returns a 200 status code" do
       expect(response).to have_http_status(200)
     end

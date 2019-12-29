@@ -5,6 +5,8 @@ class CreateUsers < ActiveRecord::Migration[6.0]
       t.string :email
       t.text :password_digest
       t.string :phone_number
+      t.boolean :banned, :default => false
+      t.boolean :busy, :default => false
       t.string :role
       t.boolean :admin, :default => false
       t.integer :user_type

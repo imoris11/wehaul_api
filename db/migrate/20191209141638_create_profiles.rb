@@ -2,6 +2,7 @@ class CreateProfiles < ActiveRecord::Migration[6.0]
   def up
     create_table :profiles do |t|
       t.text :address
+      t.string :gender
       t.string :vehicle_type
       t.text :resident_state
       t.string :city
@@ -18,10 +19,8 @@ class CreateProfiles < ActiveRecord::Migration[6.0]
       t.string :account_type
       t.references :user, null: false, foreign_key: true
       t.string :referral_name
-      t.boolean :is_active, :default => true
-      t.boolean :is_available, :default => false
+      t.integer :status
       t.boolean :is_verified, :default => true
-      t.boolean :is_busy
       t.boolean :is_confirmed, :default => false
       t.timestamps
     end

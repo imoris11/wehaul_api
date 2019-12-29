@@ -11,7 +11,11 @@ Rails.application.routes.draw do
       get :own #drivers own payments
     end
   end
-  resources :routes
+  resources :routes do
+    collection do
+      get :stats
+    end
+  end
 
   resources :payment_transactions do
     collection do
@@ -46,35 +50,63 @@ Rails.application.routes.draw do
   end
   resources :vehicle_images
   resources :vehicles
-  resources :vehicle_types
+  resources :vehicle_types do
+    collection do
+      get :stats
+    end
+  end
+
   resources :users do
     member do
       put :update_profile
     end
   end
-
-  resources :admins do
-    collection do
-      #trip and requests for admins
-      get :requests
-      get :trips
-      get :trips_stats
-      get :request_stats
-      get :cancelled_requests
-      get :active_requests 
-      get :completed_trips
-      get :cancelled_trips
-      get :pending_trips
-      get :on_going_trips
-      get :monthly_trips
-      post :create_request
+  #admins endpoints
+  namespace :admins do
+    resources :drivers do
+      member do
+        put :update_profile
+        get :ban
+        get :stats
+        get :busy
+      end
     end
-    member do
-      get :show_request
-      get :activities
-      put :update_request
+    resources :customers do
+      member do
+        put :update_profile
+        get :ban
+        get :stats
+      end
+    end
+    resources :requests do
+      collection do
+        #trip and requests for admins
+        get :requests
+        get :trips
+        get :trips_stats
+        get :request_stats
+        get :cancelled_requests
+        get :active_requests 
+        get :completed_trips
+        get :cancelled_trips
+        get :pending_trips
+        get :on_going_trips
+        get :monthly_trips
+        post :create_request
+      end
+      member do
+        get :show_request
+        get :activities
+        put :update_request
+      end
+    end
+    resources :accounts, only: [:index] do
+      collection do
+        get :stats
+      end
     end
   end
+  
   post 'signup', to: 'users#create'
   post "auth/login", to: "authentication#authenticate"
 end
