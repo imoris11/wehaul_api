@@ -67,15 +67,19 @@ Rails.application.routes.draw do
       member do
         put :update_profile
         get :ban
-        get :stats
         get :busy
+      end
+      collection do
+        get :stats
       end
     end
     resources :customers do
+      collection do
+        get :stats
+      end
       member do
         put :update_profile
         get :ban
-        get :stats
       end
     end
     resources :requests do
