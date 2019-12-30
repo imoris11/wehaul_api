@@ -50,6 +50,6 @@ class UsersController < ApplicationController
     end
 
     def update_params 
-      params.permit(:address, :resident_state, :city, :country,  :preferred_distance, :routes, :drivers_license, :driver_license_expiry_date,   :profile_picture, :account_name, :account_number, :bank_name, :account_type, :referral_name)
+      params.permit(:address, :resident_state, :city, :country,  :preferred_distance, :routes, :drivers_license, :driver_license_expiry_date,   :profile_picture, :account_name, :account_number, :bank_name, :account_type, :referral_name, :vehicle_type)
     end
 end
