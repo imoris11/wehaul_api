@@ -31,7 +31,7 @@ class Admins::CustomersController < ApplicationController
 
   def stats
     all = User.customer.count
-    banned = User.customer.banned
+    banned = User.customer.banned.count
     response = { all: all, banned: banned} 
     json_response(response)
   end
