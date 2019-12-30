@@ -31,7 +31,7 @@ class Admins::DriversController < ApplicationController
   end
 
   def busy
-    if @driver.busy 
+    if @driver.busy? 
       @driver.status = "active"
     else
       @driver.status = "busy"
