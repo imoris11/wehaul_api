@@ -20,7 +20,11 @@ class Admins::CustomersController < ApplicationController
   end
 
   def ban
-    @customer.banned = !@customer.banned
+   if @customer.banned?
+    @customer.status = "active"
+   else
+    @customer.status = "banned"
+   end
     @customer.save!
     json_response(@customer)
   end

@@ -21,13 +21,21 @@ class Admins::DriversController < ApplicationController
 
 
   def ban
-    @driver.banned = !@driver.banned
+    if  @driver.banned? 
+      @driver.status = "active"
+    else
+      @driver.status = "banned"
+    end
     @driver.save!
     json_response(@driver)
   end
 
   def busy
-    @driver.busy = !@driver.busy
+    if @driver.busy 
+      @driver.status = "active"
+    else
+      @driver.status = "busy"
+    end
     @driver.save!
     json_response(@driver)
   end
