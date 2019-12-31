@@ -36,7 +36,7 @@ class Admins::RequestsController < ApplicationController
   #get stats for all user requests
   def request_stats
     @all = TripRequest.requests.count
-    @completed = TripRequest.completed.requests.count
+    @trips = TripRequest.trips.count
     @cancelled = TripRequest.cancelled.requests.count
     @active = TripRequest.active.requests.count
     @response = { all: @all, completed: @completed, cancelled: @cancelled, active: @active}
