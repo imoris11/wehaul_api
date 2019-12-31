@@ -41,35 +41,35 @@ class TripRequestsController < ApplicationController
 
   #cancelled requests
   def cancelled_requests
-    cancelled = current_user.trip_requests.cancelled.requests
+    cancelled = current_user.trip_requests.cancelled.requests.paginate(page:params[:page], per_page:20)
     json_response(cancelled)
   end
   
   #active requests
   def active_requests 
-    pending = current_user.trip_requests.active.requests
+    pending = current_user.trip_requests.active.requests.paginate(page:params[:page], per_page:20)
     json_response(pending)
   end
 
   #completed trips
 
   def completed_trips
-    @completed = current_user.trip_requests.completed.trips
+    @completed = current_user.trip_requests.completed.trips.paginate(page:params[:page], per_page:20)
     json_response(@completed)
   end
 
   def cancelled_trips
-    @cancelled = current_user.trip_requests.cancelled.trips
+    @cancelled = current_user.trip_requests.cancelled.trips.paginate(page:params[:page], per_page:20)
     json_response(@cancelled)
   end
 
   def on_going_trips 
-    @trips = current_user.trip_requests.on_going.trips
+    @trips = current_user.trip_requests.on_going.trips.paginate(page:params[:page], per_page:20)
     json_response(@trips)
   end
 
   def pending_trips 
-    @trips = current_user.trip_requests.pending.trips
+    @trips = current_user.trip_requests.pending.trips.paginate(page:params[:page], per_page:20)
     json_response(@trips)
   end
 

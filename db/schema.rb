@@ -84,7 +84,6 @@ ActiveRecord::Schema.define(version: 2019_12_15_210343) do
     t.string "account_type"
     t.bigint "user_id", null: false
     t.string "referral_name"
-    t.integer "status"
     t.boolean "is_verified", default: true
     t.boolean "is_confirmed", default: false
     t.datetime "created_at", precision: 6, null: false
@@ -167,8 +166,7 @@ ActiveRecord::Schema.define(version: 2019_12_15_210343) do
     t.string "email"
     t.text "password_digest"
     t.string "phone_number"
-    t.boolean "banned", default: false
-    t.boolean "busy", default: false
+    t.integer "status"
     t.string "role"
     t.boolean "admin", default: false
     t.integer "user_type"

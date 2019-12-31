@@ -116,8 +116,8 @@ RSpec.describe "Requests", type: :request do
       expect(json['active']).to eq(10)
     end
 
-    it "should have 0 completed, cancelled" do
-      expect(json['completed']).to eq(0)
+    it "should have 0 trips, cancelled" do
+      expect(json['trips']).to eq(15)
     end
 
     it "should have 0 completed, cancelled" do
