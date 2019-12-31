@@ -2,6 +2,7 @@ class Admins::CustomersController < ApplicationController
   before_action :set_customer, only: [:show, :update, :ban, :busy, :update_profile]
   def index
     customers = User.customer.paginate(page:params[:page], per_page:20)
+    #customers = add_balance(customers)
     json_response(customers)
   end
 
@@ -39,6 +40,12 @@ class Admins::CustomersController < ApplicationController
   private 
   def set_customer
     @customer = User.find_by_token!(params[:id])
+  end
+
+  def add_balance(customers)
+    customers.each do |customer|
+      balance = customer.wallet.current_balance
+    end
   end
 
    # Only allow a trusted parameter "white list" through.

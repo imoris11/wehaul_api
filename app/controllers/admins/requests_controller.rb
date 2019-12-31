@@ -39,7 +39,7 @@ class Admins::RequestsController < ApplicationController
     @trips = TripRequest.trips.count
     @cancelled = TripRequest.cancelled.requests.count
     @active = TripRequest.active.requests.count
-    @response = { all: @all, completed: @completed, cancelled: @cancelled, active: @active}
+    @response = { all: @all, trips: @trips, cancelled: @cancelled, active: @active}
     json_response(@response)
   end
 
