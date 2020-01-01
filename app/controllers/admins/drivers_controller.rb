@@ -14,6 +14,19 @@ class Admins::DriversController < ApplicationController
     json_response(@driver)
   end
 
+  def create 
+    user = User.create!({name:params[:name], email: params[:email], role:'driver', user_type:'driver', password: 'Password1234', password_confirmation: 'Password1234', phone_number: params[:phone_number]})
+    vehicle = user.vehicles.new(vehicle_params)
+    vehicle_type = VehicleType.find_by_name!(params[:vehicle_type])
+    vehicle.vehicle_type_id = vehicle_type.id 
+    puts "Vehicle"
+    puts vehicle.vehicle_type_id
+    puts vehicle.user_id
+    vehicle.save!
+    user.profile.update!(update_params)
+    json_response(user)
+  end
+
   def update_profile 
     @driver.profile.update!(update_params)
     json_response(@driver)
@@ -60,6 +73,10 @@ class Admins::DriversController < ApplicationController
   end
 
   def update_params 
-    params.permit(:address, :resident_state, :city, :country,  :preferred_distance, :routes, :drivers_license, :driver_license_expiry_date,   :profile_picture, :account_name, :account_number, :bank_name, :account_type, :referral_name, :vehicle_type)
+    params.permit(:address, :resident_state, :city, :country,  :preferred_distance, :routes, :drivers_license, :driver_license_expiry_date, :driver_license_issue_date, :profile_picture, :account_name, :account_number, :bank_name, :account_type, :referral_name, :vehicle_type, :gender)
+  end
+
+  def vehicle_params
+    params.permit(:plate_number, :license, :license_no, :license_issue_date, :license_expiry_date, :vehicle_type_id)
   end
 end

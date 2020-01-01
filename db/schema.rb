@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(version: 2019_12_15_210343) do
     t.text "routes"
     t.string "drivers_license"
     t.datetime "driver_license_expiry_date"
+    t.datetime "driver_license_issue_date"
     t.text "profile_picture"
     t.string "account_name"
     t.string "account_number"
