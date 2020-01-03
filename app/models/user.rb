@@ -16,7 +16,8 @@ class User < ApplicationRecord
     validates_presence_of :name, :email, :password_digest
     after_create :create_profile
     after_create :create_wallet
-
+    default_scope {order('created_at DESC')}
+    
     def create_profile 
         Profile.create(user_id: self.id)
     end

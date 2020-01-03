@@ -6,7 +6,8 @@ class TripRequest < ApplicationRecord
   has_many :trip_activities, dependent: :destroy
   validates_presence_of :fee, :weight, :pickup_time, :pickup_date, :quantity
   after_create :set_status
-
+  default_scope {order('created_at DESC')}
+  
   def set_status
     self.update(status: 'pending') if !self.status
   end

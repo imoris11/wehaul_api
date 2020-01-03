@@ -9,7 +9,11 @@ class Admins::CustomersController < ApplicationController
   def show
     json_response(@customer)
   end
-
+  def create 
+    user = User.create!({name:params[:name], email: params[:email], role:'customer', user_type:'customer', password: 'Password1234', password_confirmation: 'Password1234', phone_number: params[:phone_number]})
+    user.profile.update!(update_params)
+    json_response(user)
+  end
   def update
     @customer.update!(customer_params)
     json_response(@customer)
@@ -50,10 +54,10 @@ class Admins::CustomersController < ApplicationController
 
    # Only allow a trusted parameter "white list" through.
    def customer_params
-    params.permit(:name, :email,  :role, :phone_number, :user_type)
+    params.permit(:name, :email, :phone_number, :role, :user_type)
   end
 
   def update_params 
-    params.permit(:address, :resident_state, :city, :country,  :profile_picture, :account_name, :account_number, :bank_name, :account_type, :referral_name)
+    params.permit(:address, :resident_state, :city, :country,  :profile_picture, :account_name, :account_number, :bank_name, :account_type, :referral_name, :gender)
   end
 end

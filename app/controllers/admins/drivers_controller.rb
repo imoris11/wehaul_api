@@ -19,9 +19,6 @@ class Admins::DriversController < ApplicationController
     vehicle = user.vehicles.new(vehicle_params)
     vehicle_type = VehicleType.find_by_name!(params[:vehicle_type])
     vehicle.vehicle_type_id = vehicle_type.id 
-    puts "Vehicle"
-    puts vehicle.vehicle_type_id
-    puts vehicle.user_id
     vehicle.save!
     user.profile.update!(update_params)
     json_response(user)
