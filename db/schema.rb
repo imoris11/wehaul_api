@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 2019_12_15_210343) do
     t.string "account_type"
     t.bigint "user_id", null: false
     t.string "referral_name"
+    t.string "company_name"
     t.boolean "is_verified", default: true
     t.boolean "is_confirmed", default: false
     t.datetime "created_at", precision: 6, null: false

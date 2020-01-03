@@ -20,6 +20,7 @@ class CreateProfiles < ActiveRecord::Migration[6.0]
       t.string :account_type
       t.references :user, null: false, foreign_key: true
       t.string :referral_name
+      t.string :company_name
       t.boolean :is_verified, :default => true
       t.boolean :is_confirmed, :default => false
       t.timestamps

@@ -80,6 +80,7 @@ Rails.application.routes.draw do
       member do
         put :update_profile
         get :ban
+        get :trips
       end
     end
     resources :requests do

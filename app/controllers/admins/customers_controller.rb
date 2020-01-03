@@ -1,5 +1,5 @@
 class Admins::CustomersController < ApplicationController
-  before_action :set_customer, only: [:show, :update, :ban, :busy, :update_profile]
+  before_action :set_customer, only: [:show, :update, :ban, :busy, :update_profile, :trips]
   def index
     customers = User.customer.paginate(page:params[:page], per_page:20)
     #customers = add_balance(customers)
@@ -7,15 +7,27 @@ class Admins::CustomersController < ApplicationController
   end
 
   def show
-    json_response(@customer)
+   user = @customer
+   profile = @customer.profile
+   trips =TripRequest.where('user_id=? OR driver_id=?', @customer.id, @customer.id)
+   response = {user: user, profile: profile }
+   json_response(response)
   end
+
+  def trips 
+    trips =TripRequest.where('user_id=? OR driver_id=?', @customer.id, @customer.id)
+    json_response(trips)
+  end
+
   def create 
     user = User.create!({name:params[:name], email: params[:email], role:'customer', user_type:'customer', password: 'Password1234', password_confirmation: 'Password1234', phone_number: params[:phone_number]})
     user.profile.update!(update_params)
     json_response(user)
   end
+
   def update
     @customer.update!(customer_params)
+    @customer.profile.update!(update_params)
     json_response(@customer)
   end
 
@@ -58,6 +70,6 @@ class Admins::CustomersController < ApplicationController
   end
 
   def update_params 
-    params.permit(:address, :resident_state, :city, :country,  :profile_picture, :account_name, :account_number, :bank_name, :account_type, :referral_name, :gender)
+    params.permit(:address, :resident_state, :city, :country,  :profile_picture, :account_name, :account_number, :bank_name, :account_type, :referral_name, :gender, :company_name)
   end
 end
