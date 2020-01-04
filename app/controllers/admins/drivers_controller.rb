@@ -59,6 +59,11 @@ class Admins::DriversController < ApplicationController
     json_response(response)
   end
 
+  def driver_information
+    driver = User.find(params[:id])
+    json_response(driver)
+  end
+
   private 
   def set_driver
     @driver = User.find_by_token!(params[:id])

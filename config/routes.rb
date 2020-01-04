@@ -31,7 +31,11 @@ Rails.application.routes.draw do
     end
   end
   resources :notifications
-  resources :driver_requests
+  resources :driver_requests do
+    member do
+      get :trip_driver_requests
+    end
+  end
   resources :trip_requests do
     collection do
       get :trips
@@ -68,6 +72,7 @@ Rails.application.routes.draw do
         put :update_profile
         get :ban
         get :busy
+        get :driver_information
       end
       collection do
         get :stats

@@ -12,6 +12,11 @@ class DriverRequestsController < ApplicationController
     json_response(@driver_request)
   end
 
+  def trip_driver_requests
+    requests = DriverRequest.where('trip_request_id=?', params[:id])
+    json_response(requests)
+  end
+
   # POST /driver_requests
   def create
     @driver_request = DriverRequest.create!(driver_request_params)
