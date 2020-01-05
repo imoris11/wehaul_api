@@ -1,7 +1,8 @@
 class Admins::DriversController < ApplicationController
   before_action :set_driver, only: [:show, :update, :ban, :busy, :update_profile]
   def index
-    drivers = User.driver.paginate(page:params[:page], per_page:20)
+    drivers = User.driver.paginate(page:params[:page], per_page:20).map(&:attributes)
+    drivers = add_driver_trips(drivers)
     json_response(drivers)
   end
 
@@ -65,8 +66,22 @@ class Admins::DriversController < ApplicationController
   end
 
   private 
+
   def set_driver
     @driver = User.find_by_token!(params[:id])
+  end
+
+  def add_driver_trips(drivers)
+    res=[]
+    drivers.each do |driver|
+      completed = TripRequest.where('driver_id=?', driver['id']).completed.count
+      trips = TripRequest.where('driver_id=?', driver['id']).count
+      driver['completed'] = completed
+      driver['trips'] = trips
+      driver['profile'] = Profile.find_by_user_id(driver['id'])
+      res<<driver
+    end
+    return res
   end
 
    # Only allow a trusted parameter "white list" through.

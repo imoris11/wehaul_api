@@ -1,8 +1,8 @@
 class Admins::CustomersController < ApplicationController
   before_action :set_customer, only: [:show, :update, :ban, :busy, :update_profile, :trips]
   def index
-    customers = User.customer.paginate(page:params[:page], per_page:20)
-    #customers = add_balance(customers)
+    customers = User.customer.paginate(page:params[:page], per_page:20).map(&:attributes)
+    customers = add_info(customers)
     json_response(customers)
   end
 
@@ -58,10 +58,17 @@ class Admins::CustomersController < ApplicationController
     @customer = User.find_by_token!(params[:id])
   end
 
-  def add_balance(customers)
+  def add_info(customers)
+    res =[]
     customers.each do |customer|
-      balance = customer.wallet.current_balance
+      balance = Wallet.find_by_user_id(customer['id']).current_balance
+      customer['balance'] = balance
+      customer['completed'] = TripRequest.where('user_id=?', customer['id']).trips.completed.count
+      customer['trips'] = TripRequest.where('user_id=?', customer['id']).requests.count
+      customer['profile'] = Profile.find_by_user_id(customer['id'])
+      res<<customer
     end
+    return res
   end
 
    # Only allow a trusted parameter "white list" through.
