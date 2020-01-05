@@ -32,6 +32,11 @@ class UsersController < ApplicationController
     json_response(@user)
   end
 
+  def change_password
+    current_user.update!({password:params[:password], password_confirmation:params[:password_confirmation]})
+    json_response(current_user)
+  end
+
   # DELETE /users/1
   def destroy
     @user.destroy

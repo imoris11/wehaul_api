@@ -142,4 +142,5 @@ Rails.application.routes.draw do
   
   post 'signup', to: 'users#create'
   post "auth/login", to: "authentication#authenticate"
+  put "auth/change_password", to: "users#change_password" 
 end
