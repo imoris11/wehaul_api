@@ -116,6 +116,29 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  #driver endpoints
+  namespace :drivers do
+    resources :accounts, only: [:index] do
+      collection do
+        get :stats
+        get :busy
+      end
+    end
+    resources :requests, only:[:index] do
+      collection do
+        get :history
+        get :cancelled
+        get :completed 
+        get :pending 
+        get :on_going 
+        get :driver_requests
+        get :driver_stats
+        get :stats
+      end
+    end
+    resources :trip_activities
+  end
   
   post 'signup', to: 'users#create'
   post "auth/login", to: "authentication#authenticate"
