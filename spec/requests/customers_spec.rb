@@ -25,11 +25,10 @@ RSpec.describe "Customers", type: :request do
 
   describe "GET /admins/customers/:id" do
     before { get "/admins/customers/#{user_id}", headers: headers}
-
     context "when records exist" do
       it "returns a user" do
         expect(json).not_to be_empty
-        expect(json['token']).to eq(user_id)
+        expect(json['user']['token']).to eq(user_id)
       end
 
       it "returns 200 status" do

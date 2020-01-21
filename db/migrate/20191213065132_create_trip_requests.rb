@@ -30,6 +30,8 @@ class CreateTripRequests < ActiveRecord::Migration[6.0]
       t.string :loader
       t.string :contact_name
       t.string :token
+      t.string :processed_by
+      t.string :driver_name
       t.timestamps
     end
   end

@@ -64,7 +64,7 @@ class Admins::CustomersController < ApplicationController
       balance = Wallet.find_by_user_id(customer['id']).current_balance
       customer['balance'] = balance
       customer['completed'] = TripRequest.where('user_id=?', customer['id']).trips.completed.count
-      customer['trips'] = TripRequest.where('user_id=?', customer['id']).requests.count
+      customer['trips'] = TripRequest.where('user_id=?', customer['id']).count
       customer['profile'] = Profile.find_by_user_id(customer['id'])
       res<<customer
     end

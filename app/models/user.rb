@@ -11,7 +11,7 @@ class User < ApplicationRecord
     has_many :support_tickets, dependent: :destroy
     has_many :payment_transactions, dependent: :destroy
     has_many :notifications, dependent: :destroy
-    enum user_type: [:customer, :driver, :admin, :support]
+    enum user_type: [:customer, :driver, :admin, :support, :super_admin]
     enum status: [:active, :busy, :banned]
     validates_presence_of :name, :email, :password_digest
     after_create :create_profile

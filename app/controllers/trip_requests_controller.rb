@@ -1,5 +1,5 @@
 class TripRequestsController < ApplicationController
-  before_action :set_trip_request, only: [:show, :update, :destroy, :activities]
+  before_action :set_trip_request, only: [:show, :update, :destroy, :activities, :pay]
 
   # get all requests
   def index
@@ -96,6 +96,16 @@ class TripRequestsController < ApplicationController
     head :no_content
   end
 
+  def pay
+    current_balance = current_user.wallet.current_balance
+    current_balance = current_balance - @trip_request.trip_amount
+    current_user.wallet.update!({current_balance: current_balance })
+    current_user.payment_transactions.create(medium:'wallet', amount: @trip_request.trip_amount, transaction_ref: @trip_request.token , message:"paid for trip #{@trip_request.token}", deposit_type: "trip request payment")
+    @trip_request.update!({is_paid:true})
+    json_response({message:'payment_successful', current_balance: current_balance})
+
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_trip_request
@@ -104,6 +114,6 @@ class TripRequestsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def trip_request_params
-      params.permit(:driver_fee, :commission, :distance, :is_approved_admin, :is_approved_user, :is_paid, :driver_paid, :trip_amount, :contact_address, :pickup_time, :fee, :pickup_date, :quantity, :weight, :vehicle_type_id, :driver_id, :contact_email, :contact_number, :status, :loader, :contact_name, :destination_address, :pickup_address, :created_by, :driver_id, :vehicles_qty, :description)
+      params.permit(:driver_fee, :commission, :distance, :is_approved_admin, :is_approved_user, :is_paid, :driver_paid, :trip_amount, :contact_address, :pickup_time, :fee, :pickup_date, :quantity, :weight, :vehicle_type_id, :driver_id, :contact_email, :contact_number, :status, :loader, :contact_name, :destination_address, :pickup_address, :created_by, :driver_id, :vehicles_qty, :description, :processed_by, :driver_name)
     end
 end

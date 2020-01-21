@@ -8,9 +8,9 @@ RSpec.describe Vehicle, type: :model do
 
   #validate presence of required data
   it { should validate_presence_of(:plate_number) }
-  it { should validate_presence_of(:license) }
+  #it { should validate_presence_of(:license) }
   it { should validate_presence_of(:license_no) }
-  it { should validate_presence_of(:serial_no) }
+  #it { should validate_presence_of(:serial_no) }
   it { should validate_presence_of(:license_expiry_date) }
   it { should validate_presence_of(:license_issue_date) }
 end

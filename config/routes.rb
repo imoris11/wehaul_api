@@ -50,6 +50,7 @@ Rails.application.routes.draw do
     end
     member do
       get :activities 
+      put :pay
     end
   end
   resources :vehicle_images
