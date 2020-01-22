@@ -101,6 +101,7 @@ class TripRequestsController < ApplicationController
     current_balance = current_balance - @trip_request.trip_amount
     current_user.wallet.update!({current_balance: current_balance })
     current_user.payment_transactions.create(medium:'wallet', amount: @trip_request.trip_amount, transaction_ref: @trip_request.token , message:"paid for trip #{@trip_request.token}", deposit_type: "trip request payment")
+    payment = DriverPayment.create!({user_id: @trip_request.driver_id, trip_request_id: @trip_request.id, amount: @trip_request.trip_amount * 0.5, created_by:current_user.id, paid_by: @trip_request.processed_by })
     @trip_request.update!({is_paid:true})
     json_response({message:'payment_successful', current_balance: current_balance})
 

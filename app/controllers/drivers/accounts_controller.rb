@@ -4,8 +4,8 @@ class Drivers::AccountsController < ApplicationController
   def stats
     trips = TripRequest.where('driver_id=?', current_user.id).count
     active = TripRequest.where('driver_id=?', current_user.id).active.count
-    sum = TripRequest.where('driver_id=?', current_user.id).completed.sum(:driver_fee)
-    payments = TripRequest.where('driver_id=?', current_user.id).completed.count
+    sum = current_user.driver_payments.sum(:amount)
+    payments = current_user.driver_payments.count
     status = current_user.status
     response ={trips:trips, active:active, sum: sum, payments: payments, status:status}
     json_response(response)

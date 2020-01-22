@@ -1,5 +1,6 @@
 class DriverPaymentsController < ApplicationController
   before_action :set_driver_payment, only: [:show, :update, :destroy]
+  before_action :set_driver, only: [:payments]
 
   # GET /driver_payments
   def index
@@ -12,6 +13,11 @@ class DriverPaymentsController < ApplicationController
     json_response(@driver_payment)
   end
 
+  def payments
+    @payments = @driver.driver_payments.paginate(page:params[:page], per_page:20)
+    json_response(@payments)
+  end
+
   def own
     payments = current_user.driver_payments.paginate(page:params[:page], per_page:20)
     json_response(payments)
@@ -20,6 +26,7 @@ class DriverPaymentsController < ApplicationController
   # POST /driver_payments
   def create
     @driver_payment = DriverPayment.create!(driver_payment_params)
+    @driver_payment.trip_request.update!({driver_paid:true})
     json_response(@driver_payment, :created)
   end
 
@@ -39,6 +46,10 @@ class DriverPaymentsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_driver_payment
       @driver_payment = DriverPayment.find_by_token!(params[:id])
+    end
+
+    def set_driver
+      @driver = User.find_by_token!(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
