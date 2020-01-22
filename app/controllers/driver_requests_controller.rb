@@ -20,6 +20,9 @@ class DriverRequestsController < ApplicationController
   # POST /driver_requests
   def create
     @driver_request = DriverRequest.create!(driver_request_params)
+    user = User.find(@driver_request.created_by)
+    activity = "#{user.name} created a driver request"
+    @driver_request.trip_request.trip_activities.create!({activity: activity, user_id: user.id})
     json_response(@driver_request, :created)
   end
 

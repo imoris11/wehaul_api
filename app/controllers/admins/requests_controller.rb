@@ -19,10 +19,12 @@ class Admins::RequestsController < ApplicationController
   #get stats for all user trips
   def trips_stats 
     @all = TripRequest.trips.count
-    @completed = TripRequest.completed.trips.count
-    @cancelled = TripRequest.cancelled.trips.count
-    @active = TripRequest.active.trips.count
-    @response = { all: @all, completed: @completed, cancelled: @cancelled, active: @active}
+    @completed = TripRequest.trips.completed.count
+    @cancelled = TripRequest.trips.cancelled.count
+    @pending = TripRequest.trips.pending.count
+    @on_going = TripRequest.trips.on_going.count
+    @active = TripRequest.trips.active.count
+    @response = { all: @all, completed: @completed, cancelled: @cancelled, active: @active, pending: @pending, on_going: @on_going}
     json_response(@response)
   end
 
