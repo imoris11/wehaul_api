@@ -10,6 +10,9 @@ Rails.application.routes.draw do
     collection do
       get :own #drivers own payments
     end
+    member do
+      get :payments
+    end
   end
   resources :routes do
     collection do
