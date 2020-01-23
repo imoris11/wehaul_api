@@ -1,22 +1,29 @@
 class PaymentTransactionsController < ApplicationController
 
   before_action :set_payment_transaction, only: [:show, :update, :destroy]
+  before_action :set_user, only: [:transactions]
   # GET /payment_transactions
   def index
     @payment_transactions = PaymentTransaction.all.paginate(page: params[:page], per_page:20)
     json_response( @payment_transactions)
   end
-
+  
   def wallet_topup
     paystackObj =  Paystack.new
     transactions = PaystackTransactions.new(paystackObj)
     result = transactions.verify(params[:trxRef])
+    if params[:user_id].present?
+      user = User.find(params[:user_id])
+    else
+      user = current_user
+    end
+
     if result['data']['status'] == "success" && result['data']['amount'] == params[:amount]
       depositAmount = result['data']['amount']/100
-      current_user.payment_transactions.create(medium:result['data']['channel'], amount: depositAmount, transaction_ref: result['data']['reference'], message:"wallet topup using paystack", deposit_type: "wallet topup")
-      amount = current_user.wallet.current_balance + depositAmount
-      current_user.wallet.update!({current_balance: amount })
-      json_response({result:result, balance:current_user.wallet.current_balance, transactions: current_user.payment_transactions.count })
+      user.payment_transactions.create(medium:result['data']['channel'], amount: depositAmount, transaction_ref: result['data']['reference'], message:"wallet topup using paystack", deposit_type: "wallet topup")
+      amount = user.wallet.current_balance + depositAmount
+      user.wallet.update!({current_balance: amount })
+      json_response({result:result, balance:user.wallet.current_balance, transactions: user.payment_transactions.count })
     else
       json_response(result)
     end
@@ -25,6 +32,11 @@ class PaymentTransactionsController < ApplicationController
 
   def own 
     @transactions = current_user.payment_transactions.paginate(page: params[:page], per_page:20)
+    json_response(@transactions)
+  end
+
+  def transactions
+    @transactions = @user.payment_transactions.paginate(page: params[:page], per_page:20)
     json_response(@transactions)
   end
 
@@ -55,6 +67,10 @@ class PaymentTransactionsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_payment_transaction
       @payment_transaction = PaymentTransaction.find_by_token!(params[:id])
+    end
+
+    def set_user
+      @user = User.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.

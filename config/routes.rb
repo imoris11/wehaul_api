@@ -25,12 +25,18 @@ Rails.application.routes.draw do
       post :wallet_topup
       get :own
     end
+    member do
+      get :transactions
+    end
   end
   
   resources :wallets do
     collection do
       get :balance
       put :update_balance
+    end
+    member do
+      get :user_wallet
     end
   end
   resources :notifications

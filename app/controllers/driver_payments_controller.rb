@@ -14,8 +14,13 @@ class DriverPaymentsController < ApplicationController
   end
 
   def payments
-    @payments = @driver.driver_payments.paginate(page:params[:page], per_page:20)
-    json_response(@payments)
+    payments = @driver.driver_payments.paginate(page:params[:page], per_page:20)
+    trips = TripRequest.where('driver_id=?', @driver.id).count
+    active = TripRequest.where('driver_id=?', @driver.id).active.count
+    sum = @driver.driver_payments.sum(:amount)
+    num_of_payments = @driver.driver_payments.count
+    response = {payments:payments, trips:trips, active:active, sum: sum, num_of_payments: num_of_payments }
+    json_response(response)
   end
 
   def own
@@ -49,7 +54,7 @@ class DriverPaymentsController < ApplicationController
     end
 
     def set_driver
-      @driver = User.find_by_token!(params[:id])
+      @driver = User.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
