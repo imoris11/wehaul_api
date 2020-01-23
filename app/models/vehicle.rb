@@ -4,5 +4,5 @@ class Vehicle < ApplicationRecord
   belongs_to :vehicle_type
   has_many :vehicle_image
 
-  validates_presence_of :plate_number,  :license_no, :license_issue_date, :license_expiry_date
+  validates_presence_of :plate_number,  :license_no, :license_issue_date, :license_expiry_date, :license
 end
