@@ -48,7 +48,9 @@ class Drivers::RequestsController < ApplicationController
     active = TripRequest.where('driver_id=?', current_user.id).active.count
     cancelled = TripRequest.where('driver_id=?', current_user.id).cancelled.count
     completed = TripRequest.where('driver_id=?', current_user.id).completed.count
-    response ={trips:trips, active:active, completed:completed, cancelled:cancelled}
+    pending = TripRequest.where('driver_id=?', current_user.id).pending.count
+    on_going = TripRequest.where('driver_id=?', current_user.id).on_going.count
+    response ={trips:trips, active:active, completed:completed, cancelled:cancelled, on_going: on_going, pending: pending}
     json_response(response)
   end
 

@@ -20,11 +20,13 @@ class TripRequestsController < ApplicationController
   #get stats for all user trips
   def trips_stats 
     @all = current_user.trip_requests.trips.count
-    @completed = current_user.trip_requests.completed.trips.count
-    @cancelled = current_user.trip_requests.cancelled.trips.count
-    @active = current_user.trip_requests.active.trips.count
+    @completed = current_user.trip_requests.trips.completed.count
+    @cancelled = current_user.trip_requests.trips.cancelled.count
+    @pending = current_user.trip_requests.trips.pending.count
+    @on_going = current_user.trip_requests.trips.on_going.count
+    @active = current_user.trip_requests.trips.active.count
     @stats = current_user.trip_requests.trips.group_by_month(:created_at, format: "%b", reverse:true).count
-    @response = { all: @all, completed: @completed, cancelled: @cancelled, active: @active, trips:@stats }
+    @response = { all: @all, completed: @completed, cancelled: @cancelled, active: @active, trips:@stats, pending: @pending, on_going: @on_going }
     json_response(@response)
   end
 
