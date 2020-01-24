@@ -90,7 +90,7 @@ class Admins::DriversController < ApplicationController
   end
 
   def update_params 
-    params.permit(:address, :resident_state, :city, :country,  :preferred_distance, :routes, :drivers_license, :driver_license_expiry_date, :driver_license_issue_date, :profile_picture, :account_name, :account_number, :bank_name, :account_type, :referral_name, :vehicle_type, :gender)
+    params.permit(:address, :resident_state, :city, :country,  :preferred_distance, :routes, :drivers_license, :driver_license_expiry_date, :driver_license_issue_date, :profile_picture, :account_name, :account_number, :bank_name, :account_type, :referral_name, :vehicle_type, :gender, :company_name)
   end
 
   def vehicle_params

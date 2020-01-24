@@ -5,7 +5,7 @@ class AuthenticateUser
     end
 
     def call 
-       return {user: user,  token:JsonWebToken.encode(user_id: user.id)} if user
+       return {user: user,  token:JsonWebToken.encode(user_id: user.id), profile:user.profile} if user
     end
 
     private
