@@ -84,6 +84,7 @@ Rails.application.routes.draw do
         get :busy
         get :driver_information
         get :vehicles
+        get :trips
       end
       collection do
         get :stats

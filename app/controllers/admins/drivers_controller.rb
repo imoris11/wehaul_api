@@ -1,5 +1,5 @@
 class Admins::DriversController < ApplicationController
-  before_action :set_driver, only: [:show, :update, :ban, :busy, :update_profile, :vehicles]
+  before_action :set_driver, only: [:show, :update, :ban, :busy, :update_profile, :vehicles, :trips]
   def index
     drivers = User.driver.paginate(page:params[:page], per_page:20).map(&:attributes)
     drivers = add_driver_trips(drivers)
@@ -16,6 +16,11 @@ class Admins::DriversController < ApplicationController
   def vehicles 
     vehicles = @driver.vehicles
     json_response(vehicles)
+  end
+
+  def trips 
+    trips =TripRequest.where('driver_id=?', @driver.id)
+    json_response(trips)
   end
 
   def update
