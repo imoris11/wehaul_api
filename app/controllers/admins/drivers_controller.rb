@@ -1,5 +1,5 @@
 class Admins::DriversController < ApplicationController
-  before_action :set_driver, only: [:show, :update, :ban, :busy, :update_profile]
+  before_action :set_driver, only: [:show, :update, :ban, :busy, :update_profile, :vehicles]
   def index
     drivers = User.driver.paginate(page:params[:page], per_page:20).map(&:attributes)
     drivers = add_driver_trips(drivers)
@@ -7,7 +7,15 @@ class Admins::DriversController < ApplicationController
   end
 
   def show
-    json_response(@driver)
+   user = @driver
+   profile = @driver.profile
+   response = {user: user, profile: profile}
+   json_response(response)
+  end
+
+  def vehicles 
+    vehicles = @driver.vehicles
+    json_response(vehicles)
   end
 
   def update
@@ -17,7 +25,7 @@ class Admins::DriversController < ApplicationController
 
   def create 
     user = User.create!({name:params[:name], email: params[:email], role:'driver', user_type:'driver', password: 'Password1234', password_confirmation: 'Password1234', phone_number: params[:phone_number]})
-    vehicle = user.vehicles.new(vehicle_params)
+    vehicle = user.vehicle.new(vehicle_params)
     vehicle_type = VehicleType.find_by_name!(params[:vehicle_type])
     vehicle.vehicle_type_id = vehicle_type.id 
     vehicle.save!

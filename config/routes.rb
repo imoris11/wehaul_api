@@ -83,6 +83,7 @@ Rails.application.routes.draw do
         get :ban
         get :busy
         get :driver_information
+        get :vehicles
       end
       collection do
         get :stats

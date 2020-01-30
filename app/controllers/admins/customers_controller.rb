@@ -9,7 +9,6 @@ class Admins::CustomersController < ApplicationController
   def show
    user = @customer
    profile = @customer.profile
-   trips =TripRequest.where('user_id=? OR driver_id=?', @customer.id, @customer.id)
    response = {user: user, profile: profile }
    json_response(response)
   end
@@ -77,6 +76,6 @@ class Admins::CustomersController < ApplicationController
   end
 
   def update_params 
-    params.permit(:address, :resident_state, :city, :country,  :profile_picture, :account_name, :account_number, :bank_name, :account_type, :referral_name, :gender, :company_name)
+    params.permit(:address, :resident_state, :city, :country,  :preferred_distance, :routes, :drivers_license, :driver_license_expiry_date, :profile_picture, :account_name, :account_number, :bank_name, :account_type, :referral_name, :vehicle_type, :driver_license_issue_date, :company_name, :gender)
   end
 end
