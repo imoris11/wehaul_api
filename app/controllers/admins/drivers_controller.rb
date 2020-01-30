@@ -21,6 +21,9 @@ class Admins::DriversController < ApplicationController
     vehicle_type = VehicleType.find_by_name!(params[:vehicle_type])
     vehicle.vehicle_type_id = vehicle_type.id 
     vehicle.save!
+    params[:vehicle_images].each do |link|
+      vehicle.vehicle_images.create!({image: link})
+    end
     user.profile.update!(update_params)
     json_response(user)
   end
