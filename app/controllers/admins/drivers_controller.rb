@@ -1,5 +1,7 @@
 class Admins::DriversController < ApplicationController
   before_action :set_driver, only: [:show, :update, :ban, :busy, :update_profile, :vehicles, :trips]
+  before_action :set_trip, only: [:trip_drivers]
+
   def index
     drivers = User.driver.paginate(page:params[:page], per_page:20).map(&:attributes)
     drivers = add_driver_trips(drivers)
@@ -81,10 +83,19 @@ class Admins::DriversController < ApplicationController
     json_response(driver)
   end
 
+  def trip_drivers
+    drivers = User.driver.active.joins(:profile).where(profiles: {vehicle_type:  @trip.vehicle_type.name})
+    json_response(drivers)
+  end
+
   private 
 
   def set_driver
     @driver = User.find_by_token!(params[:id])
+  end
+
+  def set_trip
+    @trip = TripRequest.find_by_token!(params[:id])
   end
 
   def add_driver_trips(drivers)

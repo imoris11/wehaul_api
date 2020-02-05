@@ -40,4 +40,5 @@ end
 5.times do
   User.create({name:Faker::Name.name, email: Faker::Internet.email, role:'driver', user_type:'driver', password: 'Password', password_confirmation: 'Password', phone_number: '080323423422'})
 end
- User.create({name:Faker::Name.name, email: 'super@wehaul.ng', role:'super_admin', user_type:'super_admin', password: 'Password', password_confirmation: 'Password', phone_number: '1001000123'})
+ superAdmin = User.create({name:Faker::Name.name, email: 'super@wehaul.ng', role:'super_admin', user_type:'super_admin', password: 'Password', password_confirmation: 'Password', phone_number: '1001000123'})
+  Profile.create(profile_picture: Faker::Avatar.image, user_id: superAdmin.id)
