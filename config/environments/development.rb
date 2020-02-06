@@ -29,7 +29,37 @@ Rails.application.configure do
   config.active_storage.service = :local
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  # config.action_mailer.raise_delivery_errors = false
+  # config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.default :charset => "utf-8"
+
+  # config.action_mailer.perform_deliveries = true
+  # config.action_mailer.raise_delivery_errors = true
+
+  # config.action_mailer.delivery_method = :smtp
+  #  config.action_mailer.smtp_settings = {
+  #   :enable_starttls_auto => true,
+  #   :address              => "smtp.gmail.com",
+  #   :domain               => "localhost:3000",
+  #   :port                 => 587,
+  #   :user_name            => '',
+  #   :password             => '',
+  #   :authentication       => 'plain',
+  #    }
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.smtp_settings = {
+    :user_name => '',
+    :password => '',
+    :domain => 'localhost:3000',
+    :address => 'smtp.sendgrid.net',
+    :port => 587,
+    :authentication => :plain,
+    :enable_starttls_auto => true
+  }
 
   config.action_mailer.perform_caching = false
 
