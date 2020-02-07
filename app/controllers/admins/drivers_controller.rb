@@ -32,6 +32,7 @@ class Admins::DriversController < ApplicationController
 
   def create 
     user = User.create!({name:params[:name], email: params[:email], role:'driver', user_type:'driver', password: 'Password1234', password_confirmation: 'Password1234', phone_number: params[:phone_number]})
+     UserNotifierMailer.send_added_email(user).deliver
     vehicle = user.vehicles.new(vehicle_params)
     vehicle_type = VehicleType.find_by_name!(params[:vehicle_type])
     vehicle.vehicle_type_id = vehicle_type.id 
@@ -84,7 +85,7 @@ class Admins::DriversController < ApplicationController
   end
 
   def trip_drivers
-    drivers = User.driver.active.joins(:profile).where(profiles: {vehicle_type:  @trip.vehicle_type.name})
+    drivers = get_active_drivers(@trip)
     json_response(drivers)
   end
 

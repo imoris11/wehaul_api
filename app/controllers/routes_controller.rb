@@ -3,7 +3,6 @@ class RoutesController < ApplicationController
 
   # GET /routes
   def index
-    UserNotifierMailer.send_signup_email(current_user).deliver
     @routes = Route.all.paginate(page:params[:page], per_page:20)
     json_response(@routes)
   end

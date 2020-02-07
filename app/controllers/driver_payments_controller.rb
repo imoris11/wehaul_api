@@ -31,6 +31,7 @@ class DriverPaymentsController < ApplicationController
   # POST /driver_payments
   def create
     @driver_payment = DriverPayment.create!(driver_payment_params)
+    UserNotifierMailer.send_payment_notification_driver(@driver_payment.user_id, @driver_payment.amount).deliver
     @driver_payment.trip_request.update!({driver_paid:true})
     json_response(@driver_payment, :created)
   end

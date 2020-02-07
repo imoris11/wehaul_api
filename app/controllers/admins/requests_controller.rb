@@ -81,6 +81,13 @@ class Admins::RequestsController < ApplicationController
   # POST /trip_requests
   def create_request
     @trip_request = TripRequest.create!(trip_request_params)
+    @trip = TripRequest.find_by_token!(@trip_request.token)
+    UserNotifierMailer.send_user_request_email(@trip, @trip.user)
+    drivers = get_active_drivers(@trip)
+    drivers.each do |driver|
+      DriverRequest.create!({user_id: driver.id, trip_request_id: @trip_request.id, created_by: current_user.id, price: @trip_request.driver_fee})
+      UserNotifierMailer.send_new_request_email(@trip_request, driver).deliver
+    end
     json_response(@trip_request, :created)
   end
 
@@ -92,6 +99,11 @@ class Admins::RequestsController < ApplicationController
   # PATCH/PUT /trip_requests/1
   def update_request
     @trip_request.update!(trip_request_params)
+    if @trip_request.completed?
+       UserNotifierMailer.send_trip_completed_email(@trip_request).deliver
+    else
+      UserNotifierMailer.send_trip_update_email(@trip_request).deliver
+    end
     json_response(@trip_request)
   end
 

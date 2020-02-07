@@ -23,6 +23,7 @@ class DriverRequestsController < ApplicationController
     user = User.find(@driver_request.created_by)
     activity = "#{user.name} created a driver request"
     @driver_request.trip_request.trip_activities.create!({activity: activity, user_id: user.id})
+    UserNotifierMailer.send_new_request_email(@driver_request.trip_request, @driver_request.user).deliver
     json_response(@driver_request, :created)
   end
 

@@ -4,8 +4,9 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-    <h4>Welcome, <%= @user.name %>!</h4>
-    <p>Thank you for joining WeHaul, we move cargo across Nigeria. We hope that this is the beginning of a successful business relationship. Log in to your dashboard to start using our services. </p>
+    <h4>Hi <%= @trip.user.name %>,</h4>
+    <p>Your trip: <b><%= @trip.token %></b> from  <%= @trip.pickup_address %> to <%= @trip.destination_address %> has been updated.</p>
+    <p>Log in to your dashboard to see more details about the trip.</p>
     <a href="https://wehaul.netlify.com" target="_blank">Log In</a>
     <br/>
     <p>Best</p>

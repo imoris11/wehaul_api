@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h4>Hi <%= @user.name %>,</h4>
+    <p>Your trip request was submitted successfully. We have sent your request to our drivers for a quick evaluation. You can check for their responses and your request status on your trips dashboard.</p>
+     <br/>
+    <p><b>Pickup Address:</b> <%= @trip.pickup_address %> </p>
+    <p><b>Destination Address:</b> <%=  @trip.destination_address %></p>
+    <p><b>Pickup Date:</b> <%= @trip.pickup_date %> </p>
+    <p><b>Pickup Time:</b>  <%= @trip.pickup_time %></p>
+    <p><b>Estimated Price:</b> <%= @trip.driver_fee %>  </p>
+    <a href="https://wehaul.netlify.com" target="_blank">Log In</a>
+    <br/>
+    <p>Best</p>
+    <p>WeHaul Team</p>
+  </body>
+</html>

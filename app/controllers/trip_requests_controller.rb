@@ -83,13 +83,25 @@ class TripRequestsController < ApplicationController
   # POST /trip_requests
   def create
     @trip_request = current_user.trip_requests.create!(trip_request_params)
+     @trip = TripRequest.find_by_token!(@trip_request.token)
+    drivers = get_active_drivers(@trip)
+    UserNotifierMailer.send_user_request_email(@trip, current_user)
+    drivers.each do |driver|
+      DriverRequest.create!({user_id: driver.id, trip_request_id: @trip.id, created_by: current_user.id, price: @trip.fee})
+      UserNotifierMailer.send_new_request_email(@trip_request, driver).deliver
+    end
     json_response(@trip_request, :created)
   end
 
   # PATCH/PUT /trip_requests/1
   def update
     @trip_request.update!(trip_request_params)
-    @trip_request.trip_activities.create!({ activity: params[:activity], user_id: params[:activity_user]}) if params[:activity].present?
+    if @trip_request.completed?
+       UserNotifierMailer.send_trip_completed_email(@trip_request).deliver
+    else
+      UserNotifierMailer.send_trip_update_email(@trip_request).deliver
+    end
+   # @trip_request.trip_activities.create!({ activity: params[:activity], user_id: params[:activity_user]}) if params[:activity].present?
     json_response(@trip_request)
   end
 
@@ -100,13 +112,21 @@ class TripRequestsController < ApplicationController
   end
 
   def pay
+    #update user balance
     current_balance = current_user.wallet.current_balance
     current_balance = current_balance - @trip_request.trip_amount
     current_user.wallet.update!({current_balance: current_balance })
+    #add to payment transactions
     current_user.payment_transactions.create(medium:'wallet', amount: @trip_request.trip_amount, transaction_ref: @trip_request.token , message:"paid for trip #{@trip_request.token}", deposit_type: "trip request payment")
-    payment = DriverPayment.create!({user_id: @trip_request.driver_id, trip_request_id: @trip_request.id, amount: @trip_request.trip_amount * 0.5, created_by:current_user.id, paid_by: @trip_request.processed_by, is_paid:true })
+    #create driver payment
+    payment = DriverPayment.create!({user_id: @trip_request.driver_id, trip_request_id: @trip_request.id, amount: @trip_request.driver_fee * 0.5, created_by:current_user.id, paid_by: @trip_request.processed_by, is_paid:true })
+    #update trip request
     @trip_request.update!({is_paid:true})
     @trip_request.trip_activities.create!({ activity: "#{current_user.name} paid for the trip", user_id: current_user.id })
+    #Send email notifications
+    UserNotifierMailer.send_payment_notification_admin(@trip_request).deliver
+    UserNotifierMailer.send_payment_notification_driver(@trip_request.driver_id, @trip_request.driver_fee * 0.5).deliver
+    #respond 
     json_response({message:'payment_successful', current_balance: current_balance})
 
   end
