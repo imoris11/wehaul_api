@@ -5,12 +5,13 @@ class User < ApplicationRecord
     has_one :wallet, dependent: :destroy
     has_many :trip_requests, dependent: :destroy
     has_many :trip_activities, dependent: :destroy
-    has_many :vehicles, dependent: :destroy
+    has_one :vehicle, dependent: :destroy
     has_many :driver_payments, dependent: :destroy
     has_many :driver_requests, dependent: :destroy
     has_many :support_tickets, dependent: :destroy
     has_many :payment_transactions, dependent: :destroy
     has_many :notifications, dependent: :destroy
+    has_many :driver_routes, dependent: :destroy
     enum user_type: [:customer, :driver, :admin, :support, :super_admin]
     enum status: [:active, :busy, :banned]
     validates_presence_of :name, :email, :password_digest

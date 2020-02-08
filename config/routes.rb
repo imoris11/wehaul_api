@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
   
+  resources :driver_routes, only: [:show, :update, :destroy] do
+    member do
+      post :create_routes
+      get :driver_routes
+    end
+  end
   resources :support_tickets
   resources :trip_activities do
     collection do
@@ -63,7 +69,11 @@ Rails.application.routes.draw do
     end
   end
   resources :vehicle_images
-  resources :vehicles
+  resources :vehicles do 
+    member do
+      post :create_vehicle
+    end
+  end
   resources :vehicle_types do
     collection do
       get :stats

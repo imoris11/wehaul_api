@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_15_210343) do
+ActiveRecord::Schema.define(version: 2020_02_08_100321) do
 
   create_table "driver_payments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "created_by"
@@ -39,6 +39,15 @@ ActiveRecord::Schema.define(version: 2019_12_15_210343) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["trip_request_id"], name: "index_driver_requests_on_trip_request_id"
     t.index ["user_id"], name: "index_driver_requests_on_user_id"
+  end
+
+  create_table "driver_routes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "location"
+    t.string "token"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_driver_routes_on_user_id"
   end
 
   create_table "notifications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -231,6 +240,7 @@ ActiveRecord::Schema.define(version: 2019_12_15_210343) do
   add_foreign_key "driver_payments", "users"
   add_foreign_key "driver_requests", "trip_requests"
   add_foreign_key "driver_requests", "users"
+  add_foreign_key "driver_routes", "users"
   add_foreign_key "notifications", "users"
   add_foreign_key "payment_transactions", "users"
   add_foreign_key "profiles", "users"

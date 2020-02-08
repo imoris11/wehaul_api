@@ -16,8 +16,8 @@ class Admins::DriversController < ApplicationController
   end
 
   def vehicles 
-    vehicles = @driver.vehicles
-    json_response(vehicles)
+    vehicle = @driver.vehicle
+    json_response(vehicle)
   end
 
   def trips 
@@ -33,7 +33,8 @@ class Admins::DriversController < ApplicationController
   def create 
     user = User.create!({name:params[:name], email: params[:email], role:'driver', user_type:'driver', password: 'Password1234', password_confirmation: 'Password1234', phone_number: params[:phone_number]})
      UserNotifierMailer.send_added_email(user).deliver
-    vehicle = user.vehicles.new(vehicle_params)
+    vehicle = Vehicle.new(vehicle_params)
+    vehicle.user_id = user.id
     vehicle_type = VehicleType.find_by_name!(params[:vehicle_type])
     vehicle.vehicle_type_id = vehicle_type.id 
     vehicle.save!
