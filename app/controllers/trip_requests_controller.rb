@@ -25,8 +25,9 @@ class TripRequestsController < ApplicationController
     @pending = current_user.trip_requests.trips.pending.count
     @on_going = current_user.trip_requests.trips.on_going.count
     @active = current_user.trip_requests.trips.active.count
-    @stats = current_user.trip_requests.trips.group_by_month(:created_at, format: "%b", reverse:true).count
-    @response = { all: @all, completed: @completed, cancelled: @cancelled, active: @active, trips:@stats, pending: @pending, on_going: @on_going }
+    @monthly_successful = current_user.trip_requests.completed.trips.group_by_month(:created_at, format: "%b", reverse:true).count
+    @monthly_pending = current_user.trip_requests.pending.trips.group_by_month(:created_at, format: "%b", reverse:true).count
+    @response = { all: @all, completed: @completed, cancelled: @cancelled, active: @active, monthly_pending:@monthly_pending, monthly_successful:@monthly_successful, pending: @pending, on_going: @on_going }
     json_response(@response)
   end
 

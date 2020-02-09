@@ -30,8 +30,9 @@ class Admins::RequestsController < ApplicationController
 
   def monthly_trips
     @successful = TripRequest.completed.trips.group_by_month(:created_at, format: "%b", reverse:true).count
-    @pending = TripRequest.pending.trips.group_by_month(:created_at, format: "%b", reverse:true).count
-    @response = {successful:@successful, pending: @pending}
+    @active = TripRequest.active.trips.group_by_month(:created_at, format: "%b", reverse:true).count
+    @cancelled = TripRequest.cancelled.trips.group_by_month(:created_at, format: "%b", reverse:true).count
+    @response = {successful:@successful, active: @active, cancelled: @cancelled}
     json_response(@response)
   end
 
