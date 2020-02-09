@@ -168,6 +168,8 @@ ActiveRecord::Schema.define(version: 2020_02_08_100321) do
     t.string "token"
     t.string "processed_by"
     t.string "driver_name"
+    t.string "destination_state"
+    t.string "pickup_state"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_trip_requests_on_user_id"

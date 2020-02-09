@@ -10,7 +10,7 @@ class ApplicationController < ActionController::API
     end
 
     def get_active_drivers(trip)
-       @request_drivers = User.driver.active.joins(:profile).where(profiles: {vehicle_type:  @trip.vehicle_type.name})
+       @request_drivers = User.driver.active.joins(:profile, :driver_routes).where(profiles: {vehicle_type:  @trip.vehicle_type.name}, driver_routes: {location: @trip.destination_state}, driver_routes: {location: @trip.pickup_state} )
        return @request_drivers
     end
     

@@ -115,6 +115,6 @@ class Admins::RequestsController < ApplicationController
   end
   # Only allow a trusted parameter "white list" through.
   def trip_request_params
-    params.permit(:driver_fee, :commission, :distance, :is_approved_admin, :is_approved_user, :is_paid, :driver_paid, :trip_amount, :contact_address, :pickup_time, :fee, :pickup_date, :quantity, :weight, :vehicle_type_id, :driver_id, :contact_email, :contact_number, :status, :loader, :contact_name, :destination_address, :pickup_address, :created_by, :driver_id, :user_id, :vehicles_qty, :description)
+    params.permit(:driver_fee, :commission, :distance, :is_approved_admin, :is_approved_user, :is_paid, :driver_paid, :trip_amount, :contact_address, :pickup_time, :fee, :pickup_date, :quantity, :weight, :vehicle_type_id, :driver_id, :contact_email, :contact_number, :status, :loader, :contact_name, :destination_address, :pickup_address, :created_by, :driver_id, :user_id, :vehicles_qty, :description, :destination_state, :pickup_state)
   end
 end
