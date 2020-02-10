@@ -1,5 +1,5 @@
 class TripRequestsController < ApplicationController
-  before_action :set_trip_request, only: [:show, :update, :destroy, :activities, :pay]
+  before_action :set_trip_request, only: [:show, :update, :destroy, :activities, :pay, :accepted_driver_requests, :assign]
 
   # get all requests
   def index
@@ -96,14 +96,13 @@ class TripRequestsController < ApplicationController
 
   # PATCH/PUT /trip_requests/1
   def update
-    @trip_request.update!(trip_request_params)
-    if @trip_request.completed?
-       UserNotifierMailer.send_trip_completed_email(@trip_request).deliver
-    else
-      UserNotifierMailer.send_trip_update_email(@trip_request).deliver
-    end
-   # @trip_request.trip_activities.create!({ activity: params[:activity], user_id: params[:activity_user]}) if params[:activity].present?
-    json_response(@trip_request)
+    update_helper
+  end
+
+  def assign
+    @driver = User.find(params[:driver_id])
+    UserNotifierMailer.send_assignment_email(@trip_request, @driver).deliver
+    update_helper
   end
 
   # DELETE /trip_requests/1
@@ -132,10 +131,26 @@ class TripRequestsController < ApplicationController
 
   end
 
+  def accepted_driver_requests
+    requests = @trip_request.driver_requests.accepted.all
+    json_response(requests)
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_trip_request
       @trip_request = TripRequest.find_by_token!(params[:id])
+    end
+
+    def update_helper
+      @trip_request.update!(trip_request_params)
+      if @trip_request.completed?
+        UserNotifierMailer.send_trip_completed_email(@trip_request).deliver
+      else
+        UserNotifierMailer.send_trip_update_email(@trip_request).deliver
+      end
+      @trip_request.trip_activities.create!({ activity: params[:activity], user_id: params[:activity_user]}) if params[:activity].present?
+      json_response(@trip_request)
     end
 
     # Only allow a trusted parameter "white list" through.

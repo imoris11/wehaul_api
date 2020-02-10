@@ -66,6 +66,8 @@ Rails.application.routes.draw do
     member do
       get :activities 
       put :pay
+      get :accepted_driver_requests
+      put :assign
     end
   end
   resources :vehicle_images

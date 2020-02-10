@@ -55,4 +55,11 @@ class UserNotifierMailer < ApplicationMailer
     mail( :to => @driver.email,
     :subject => 'Wehaul: New Payment Received')
   end
+
+  def send_assignment_email(trip, driver)
+    @driver = driver
+    @trip = trip
+    mail( :to => @driver.email,
+    :subject => 'Wehaul: New Trip Assigned')
+  end
 end

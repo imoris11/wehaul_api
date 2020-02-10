@@ -4,8 +4,8 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-    <h4>Hi <%= @driver.name %>,</h4>
-    <p>A new trip request matching your routes has been added to your list of trip requests. Proceed to your dashboard to accept, decline or view more details of the request. Below is a summary of the request.</p>
+    <h4>Congratulations <%= @driver.name %>,</h4>
+    <p>You have been assigned to the trip <b><%= @trip.token %></b>, from  <%= @trip.pickup_address %> to <%= @trip.destination_address %> with a fee of <%= @trip.driver_fee %>.</p>
     <br/>
     <p><b>Pickup Address:</b> <%= @trip.pickup_address %> </p>
     <p><b>Destination Address:</b> <%=  @trip.destination_address %></p>
