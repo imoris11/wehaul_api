@@ -89,6 +89,7 @@ class TripRequestsController < ApplicationController
     UserNotifierMailer.send_user_request_email(@trip, current_user)
     drivers.each do |driver|
       DriverRequest.create!({user_id: driver.id, trip_request_id: @trip.id, created_by: current_user.id, price: @trip.fee})
+      send_message("A new trip matching your route has been requested. Check your email/dashbaord for more information.", @driver.phone_number)
       UserNotifierMailer.send_new_request_email(@trip_request, driver).deliver
     end
     json_response(@trip_request, :created)
@@ -101,6 +102,8 @@ class TripRequestsController < ApplicationController
 
   def assign
     @driver = User.find(params[:driver_id])
+    send_message("You have been assigned the trip #{@trip_request.token}, you can contact #{@trip_request.user.name} on #{@trip_request.user.phone_number}. Check your email/dashbaord for more information.", @driver.phone_number)
+    send_message("You trip, #{@trip_request.token},  been assigned to #{@driver.name}. You can contact #{@driver.name} on #{@driver.phone_number}. Check your email/dashbaord for more information.", @trip_request.user.phone_number)
     UserNotifierMailer.send_assignment_email(@trip_request, @driver).deliver
     update_helper
   end
@@ -124,7 +127,9 @@ class TripRequestsController < ApplicationController
     @trip_request.update!({is_paid:true})
     @trip_request.trip_activities.create!({ activity: "#{current_user.name} paid for the trip", user_id: current_user.id })
     #Send email notifications
+    @driver = User.find(@trip_request.driver_id)
     UserNotifierMailer.send_payment_notification_admin(@trip_request).deliver
+    send_message("A payment of #{@trip_request.driver_fee * 0.5} has been made to your account. Check your dashbaord for more information.", @driver.phone_number)
     UserNotifierMailer.send_payment_notification_driver(@trip_request.driver_id, @trip_request.driver_fee * 0.5).deliver
     #respond 
     json_response({message:'payment_successful', current_balance: current_balance})
@@ -146,6 +151,7 @@ class TripRequestsController < ApplicationController
       @trip_request.update!(trip_request_params)
       if @trip_request.completed?
         UserNotifierMailer.send_trip_completed_email(@trip_request).deliver
+        send_message("#{@trip_request.user.name}, your request #{@trip_request.token} has been completed. Check your email/dashbaord for more information.", @trip_request.user.phone_number)
       else
         UserNotifierMailer.send_trip_update_email(@trip_request).deliver
       end

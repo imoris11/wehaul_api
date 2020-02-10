@@ -5,6 +5,7 @@ ruby '2.6.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.1'
+gem "africastalking-ruby"
 #group records by date
 gem 'groupdate'
 # Use mysql as the database for Active Record

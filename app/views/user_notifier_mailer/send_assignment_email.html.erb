@@ -7,6 +7,8 @@
     <h4>Congratulations <%= @driver.name %>,</h4>
     <p>You have been assigned to the trip <b><%= @trip.token %></b>, from  <%= @trip.pickup_address %> to <%= @trip.destination_address %> with a fee of <%= @trip.driver_fee %>.</p>
     <br/>
+     <p><b>Customer:</b> <%= @trip.user.name %> </p>
+      <p><b>Phone Number:</b> <%= @trip.user.phone_number %> </p>
     <p><b>Pickup Address:</b> <%= @trip.pickup_address %> </p>
     <p><b>Destination Address:</b> <%=  @trip.destination_address %></p>
     <p><b>Pickup Date:</b> <%= @trip.pickup_date %> </p>
