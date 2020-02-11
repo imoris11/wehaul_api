@@ -68,6 +68,7 @@ Rails.application.routes.draw do
       put :pay
       get :accepted_driver_requests
       put :assign
+      put :assign_driver
     end
   end
   resources :vehicle_images

@@ -83,7 +83,7 @@ class Admins::RequestsController < ApplicationController
   def create_request
     @trip_request = TripRequest.create!(trip_request_params)
     @trip = TripRequest.find_by_token!(@trip_request.token)
-    UserNotifierMailer.send_user_request_email(@trip, @trip.user)
+    UserNotifierMailer.send_user_request_email(@trip, @trip_request.user).deliver
     drivers = get_active_drivers(@trip)
     drivers.each do |driver|
       DriverRequest.create!({user_id: driver.id, trip_request_id: @trip_request.id, created_by: current_user.id, price: @trip_request.driver_fee})

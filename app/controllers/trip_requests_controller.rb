@@ -1,6 +1,6 @@
 class TripRequestsController < ApplicationController
   before_action :set_trip_request, only: [:show, :update, :destroy, :activities, :pay, :accepted_driver_requests, :assign]
-
+  before_action :set_driver_request, only: [:assign_driver]
   # get all requests
   def index
       @trip_requests = current_user.trip_requests.requests.paginate(page:params[:page], per_page:20)
@@ -89,7 +89,7 @@ class TripRequestsController < ApplicationController
     UserNotifierMailer.send_user_request_email(@trip, current_user)
     drivers.each do |driver|
       DriverRequest.create!({user_id: driver.id, trip_request_id: @trip.id, created_by: current_user.id, price: @trip.fee})
-      send_message("A new trip matching your route has been requested. Check your email/dashbaord for more information.", @driver.phone_number)
+      send_message("A new trip matching your route has been requested. Check your email/dashbaord for more information.", driver.phone_number)
       UserNotifierMailer.send_new_request_email(@trip_request, driver).deliver
     end
     json_response(@trip_request, :created)
@@ -100,11 +100,26 @@ class TripRequestsController < ApplicationController
     update_helper
   end
 
+  #assign by customer
+  def assign_driver
+    vehicle_type = @request.trip_request.vehicle_type
+    driver = @request.user
+    customer = @request.trip_request.user
+    commission = @request.price * (vehicle_type.commission_rate/100)
+    @request.trip_request.update!({driver_id: driver.id, driver_name: driver.name, 
+      processed_by: customer.name, status: "on_going", is_approved_admin: true, 
+      commission: commission, trip_amount: @request.price + commission, 
+      fee: @request.price + commission })
+    send_notifications(@request.trip_request, driver)
+    trip = @request.trip_request
+    @request.destroy!
+    json_response(trip)
+  end
+
+  #assign by admin
   def assign
     @driver = User.find(params[:driver_id])
-    send_message("You have been assigned the trip #{@trip_request.token}, you can contact #{@trip_request.user.name} on #{@trip_request.user.phone_number}. Check your email/dashbaord for more information.", @driver.phone_number)
-    send_message("You trip, #{@trip_request.token},  been assigned to #{@driver.name}. You can contact #{@driver.name} on #{@driver.phone_number}. Check your email/dashbaord for more information.", @trip_request.user.phone_number)
-    UserNotifierMailer.send_assignment_email(@trip_request, @driver).deliver
+    send_notifications(@trip_request, @driver)
     update_helper
   end
 
@@ -145,6 +160,17 @@ class TripRequestsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_trip_request
       @trip_request = TripRequest.find_by_token!(params[:id])
+    end
+
+    def set_driver_request 
+      @request = DriverRequest.find_by_token!(params[:id])
+    end
+    def send_notifications (trip, driver)
+      @trip_request = trip
+      @driver = driver
+      send_message("You have been assigned the trip #{@trip_request.token}, you can contact #{@trip_request.user.name} on #{@trip_request.user.phone_number}. Check your email/dashbaord for more information.", @driver.phone_number)
+      send_message("You trip, #{@trip_request.token},  been assigned to #{@driver.name}. You can contact #{@driver.name} on #{@driver.phone_number}. Check your email/dashbaord for more information.", @trip_request.user.phone_number)
+      UserNotifierMailer.send_assignment_email(@trip_request, @driver).deliver
     end
 
     def update_helper
