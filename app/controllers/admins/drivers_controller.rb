@@ -108,6 +108,7 @@ class Admins::DriversController < ApplicationController
       driver['completed'] = completed
       driver['trips'] = trips
       driver['profile'] = Profile.find_by_user_id(driver['id'])
+      driver['balance'] = DriverPayment.where('user_id=?', driver['id']).sum(:amount)
       res<<driver
     end
     return res
