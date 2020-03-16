@@ -42,7 +42,7 @@ class Admins::DriversController < ApplicationController
       vehicle.vehicle_images.create!({image: link})
     end
     user.profile.update!(update_params)
-    json_response(user)
+    json_response(user, :created)
   end
 
   def update_profile 

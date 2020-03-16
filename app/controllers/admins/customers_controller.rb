@@ -21,7 +21,7 @@ class Admins::CustomersController < ApplicationController
   def create 
     user = User.create!({name:params[:name], email: params[:email], role:'customer', user_type:'customer', password: 'Password1234', password_confirmation: 'Password1234', phone_number: params[:phone_number]})
     user.profile.update!(update_params)
-    json_response(user)
+    json_response(user, :created)
   end
 
   def update
