@@ -112,6 +112,7 @@ class TripRequestsController < ApplicationController
       fee: @request.price + commission })
     send_notifications(@request.trip_request, driver)
     trip = @request.trip_request
+    trip.user.notifications.create!(target:'trip', message: "Your trip has been assigned to #{@driver.name}")
     @request.destroy!
     json_response(trip)
   end
@@ -119,6 +120,7 @@ class TripRequestsController < ApplicationController
   #assign by admin
   def assign
     @driver = User.find(params[:driver_id])
+    @trip_request.user.notifications.create!(target:'trip', message: "Your trip has been assigned to #{@driver.name}")
     send_notifications(@trip_request, @driver)
     update_helper
   end
@@ -177,10 +179,13 @@ class TripRequestsController < ApplicationController
       @trip_request.update!(trip_request_params)
       if @trip_request.completed?
         UserNotifierMailer.send_trip_completed_email(@trip_request).deliver
+        @trip_request.user.notifications.create!(target:'trip', message: "Your trip #{@trip_request.token} is complete")
         send_message("#{@trip_request.user.name}, your request #{@trip_request.token} has been completed. Check your email/dashbaord for more information.", @trip_request.user.phone_number)
       else
+        @trip_request.user.notifications.create!(target:'trip', message: "Your trip #{@trip_request.token}  has been updated")
         UserNotifierMailer.send_trip_update_email(@trip_request).deliver
       end
+      @trip_request.user.notifications.create!(target:'trip', message:  params[:activity]) if params[:activity].present?
       @trip_request.trip_activities.create!({ activity: params[:activity], user_id: params[:activity_user]}) if params[:activity].present?
       json_response(@trip_request)
     end

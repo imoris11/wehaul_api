@@ -30,6 +30,7 @@ class DriverRequestsController < ApplicationController
   # PATCH/PUT /driver_requests/1
   def update
     @driver_request.update!(driver_request_params)
+    @driver_request.trip_request.user.notifications.create!(target:'trip', message: "#{@driver_request.user.name} has accepted your trip request with a price of #{@driver_request.price}") if @driver_request.is_accepted?
     json_response(@driver_request)
   end
 

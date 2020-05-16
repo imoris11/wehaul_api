@@ -23,6 +23,7 @@ class PaymentTransactionsController < ApplicationController
       user.payment_transactions.create(medium:result['data']['channel'], amount: depositAmount, transaction_ref: result['data']['reference'], message:"wallet topup using paystack", deposit_type: "wallet topup")
       amount = user.wallet.current_balance + depositAmount
       user.wallet.update!({current_balance: amount })
+      user.notifications.create!(target:'wallet', message: "Account top up of #{depositAmount} was successful")
       json_response({result:result, balance:user.wallet.current_balance, transactions: user.payment_transactions.count })
     else
       json_response(result)
