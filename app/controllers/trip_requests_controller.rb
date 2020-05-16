@@ -67,7 +67,7 @@ class TripRequestsController < ApplicationController
   end
 
   def on_going_trips 
-    @trips = current_user.trip_requests.on_going.trips.paginate(page:params[:page], per_page:20)
+    @trips = current_user.trip_requests.active.trips.paginate(page:params[:page], per_page:20)
     json_response(@trips)
   end
 
