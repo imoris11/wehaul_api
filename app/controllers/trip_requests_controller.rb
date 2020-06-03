@@ -149,16 +149,16 @@ class TripRequestsController < ApplicationController
     #add to payment transactions
     current_user.payment_transactions.create(medium:'wallet', amount: @trip_request.trip_amount, transaction_ref: @trip_request.token , message:"paid for trip #{@trip_request.token}", deposit_type: "trip request payment")
     #create driver payment
-    payment = DriverPayment.create!({user_id: @trip_request.driver_id, trip_request_id: @trip_request.id, amount: @trip_request.driver_fee * 0.5, created_by:current_user.id, paid_by: @trip_request.processed_by, is_paid:true })
+    payment = DriverPayment.create!({user_id: @trip_request.driver_id, trip_request_id: @trip_request.id, amount: @trip_request.driver_fee, created_by:current_user.id, paid_by: @trip_request.processed_by, is_paid:true })
     #update trip request
     @trip_request.update!({is_paid:true})
     @trip_request.trip_activities.create!({ activity: "#{current_user.name} paid for the trip", user_id: current_user.id })
     #Send email notifications
     @driver = User.find(@trip_request.driver_id)
     UserNotifierMailer.send_payment_notification_admin(@trip_request).deliver
-    send_message("A payment of #{@trip_request.driver_fee * 0.5} has been made to your account. Check your dashbaord for more information.", @driver.phone_number)
-    @driver.notifications.create!(target:'wallet', message: "#{@trip_request.driver_fee * 0.5} has been added to your wallet for your services.")
-    UserNotifierMailer.send_payment_notification_driver(@trip_request.driver_id, @trip_request.driver_fee * 0.5).deliver
+    send_message("A payment of #{@trip_request.driver_fee} has been made to your account. Check your dashbaord for more information.", @driver.phone_number)
+    @driver.notifications.create!(target:'wallet', message: "#{@trip_request.driver_fee} has been added to your wallet for your services.")
+    UserNotifierMailer.send_payment_notification_driver(@trip_request.driver_id, @trip_request.driver_fee).deliver
     #respond 
     json_response({message:'payment_successful', current_balance: current_balance})
 
