@@ -90,6 +90,7 @@ class TripRequestsController < ApplicationController
     drivers.each do |driver|
       DriverRequest.create!({user_id: driver.id, trip_request_id: @trip.id, created_by: current_user.id, price: @trip.fee})
       send_message("A new trip matching your route has been requested. Check your email/dashbaord for more information.", driver.phone_number)
+      driver.notifications.create!(target:'trip', message: "A trip matching your routes has been created. Find out more on your app.")
       UserNotifierMailer.send_new_request_email(@trip_request, driver).deliver
     end
     json_response(@trip_request, :created)
@@ -106,14 +107,21 @@ class TripRequestsController < ApplicationController
     driver = @request.user
     customer = @request.trip_request.user
     commission = @request.price * (vehicle_type.commission_rate/100)
-    @request.trip_request.update!({driver_id: driver.id, driver_name: driver.name, 
-      processed_by: customer.name, status: "on_going", is_approved_admin: true, 
-      commission: commission, trip_amount: @request.price + commission, 
+    @request.trip_request.update!({
+      driver_id: driver.id, 
+      driver_name: driver.name, 
+      processed_by: customer.name, 
+      status: "on_going", 
+      is_approved_admin: true, 
+      commission: commission, 
+      trip_amount: @request.price + commission, 
+      driver_fee: @request.price,
       fee: @request.price + commission })
     send_notifications(@request.trip_request, driver)
     trip = @request.trip_request
-    trip.user.notifications.create!(target:'trip', message: "Your trip has been assigned to #{@driver.name}")
-    @request.destroy!
+    trip.user.notifications.create!(target:'trip', message: "Your trip has been assigned to #{driver.name}")
+    driver.notifications.create!(target:'trip', message: "You have been assigned to a trip by #{trip.user.name} at the price of #{@request.price}")
+    @request.trip_request.driver_requests.destroy_all
     json_response(trip)
   end
 
@@ -121,6 +129,8 @@ class TripRequestsController < ApplicationController
   def assign
     @driver = User.find(params[:driver_id])
     @trip_request.user.notifications.create!(target:'trip', message: "Your trip has been assigned to #{@driver.name}")
+    driver.notifications.create!(target:'trip', message: "You have been assigned to a trip by #{ @trip_request.user.name}")
+    @trip_request.driver_requests.destroy_all
     send_notifications(@trip_request, @driver)
     update_helper
   end
