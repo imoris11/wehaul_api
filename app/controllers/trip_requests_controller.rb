@@ -157,6 +157,7 @@ class TripRequestsController < ApplicationController
     @driver = User.find(@trip_request.driver_id)
     UserNotifierMailer.send_payment_notification_admin(@trip_request).deliver
     send_message("A payment of #{@trip_request.driver_fee * 0.5} has been made to your account. Check your dashbaord for more information.", @driver.phone_number)
+    @driver.notifications.create!(target:'wallet', message: "#{@trip_request.driver_fee * 0.5} has been added to your wallet for your services.")
     UserNotifierMailer.send_payment_notification_driver(@trip_request.driver_id, @trip_request.driver_fee * 0.5).deliver
     #respond 
     json_response({message:'payment_successful', current_balance: current_balance})
