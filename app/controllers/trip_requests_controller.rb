@@ -1,5 +1,5 @@
 class TripRequestsController < ApplicationController
-  before_action :set_trip_request, only: [:show, :update, :destroy, :activities, :pay, :accepted_driver_requests, :assign]
+  before_action :set_trip_request, only: [:show, :update, :destroy, :activities, :pay, :accepted_driver_requests, :assign, :tracking]
   before_action :set_driver_request, only: [:assign_driver]
   # get all requests
   def index
@@ -167,6 +167,11 @@ class TripRequestsController < ApplicationController
   def accepted_driver_requests
     requests = @trip_request.driver_requests.accepted.all
     json_response(requests)
+  end
+
+  def tracking
+    trackings = @trip_request.trackings.all
+    json_response(trackings)
   end
 
   private

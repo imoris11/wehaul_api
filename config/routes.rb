@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   
+  resources :trackings
   resources :driver_routes, only: [:show, :update, :destroy] do
     member do
       post :create_routes
@@ -69,6 +70,7 @@ Rails.application.routes.draw do
       get :accepted_driver_requests
       put :assign
       put :assign_driver
+      get :tracking
     end
   end
   resources :vehicle_images

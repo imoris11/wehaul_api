@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_08_100321) do
+ActiveRecord::Schema.define(version: 2020_06_05_011120) do
 
   create_table "driver_payments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "created_by"
@@ -122,6 +122,15 @@ ActiveRecord::Schema.define(version: 2020_02_08_100321) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["trip_request_id"], name: "index_support_tickets_on_trip_request_id"
     t.index ["user_id"], name: "index_support_tickets_on_user_id"
+  end
+
+  create_table "trackings", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "location"
+    t.string "token"
+    t.bigint "trip_request_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["trip_request_id"], name: "index_trackings_on_trip_request_id"
   end
 
   create_table "trip_activities", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -248,6 +257,7 @@ ActiveRecord::Schema.define(version: 2020_02_08_100321) do
   add_foreign_key "profiles", "users"
   add_foreign_key "support_tickets", "trip_requests"
   add_foreign_key "support_tickets", "users"
+  add_foreign_key "trackings", "trip_requests"
   add_foreign_key "trip_activities", "trip_requests"
   add_foreign_key "trip_activities", "users"
   add_foreign_key "vehicle_images", "vehicles"
