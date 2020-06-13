@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_05_011120) do
+ActiveRecord::Schema.define(version: 2020_06_13_220801) do
 
   create_table "driver_payments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "created_by"
@@ -197,6 +197,7 @@ ActiveRecord::Schema.define(version: 2020_06_05_011120) do
     t.text "token"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "device_token"
   end
 
   create_table "vehicle_images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
