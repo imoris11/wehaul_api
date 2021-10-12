@@ -13,7 +13,7 @@ gem 'mysql2'
 #paystack for verifying payments
 gem 'paystack'
 # Use Puma as the app server
-gem 'puma', '~> 4.3'
+gem 'puma', '~> 5.5'
 #add faker gem
  gem 'faker'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
